@@ -14,9 +14,5 @@ namespace Shopv2.Models
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal UnitPrice { get; set; }
-
-        public Order Order { get; set; } = null!;
-
-        public Bouquet Bouquet { get; set; } = null!;
     }
 }

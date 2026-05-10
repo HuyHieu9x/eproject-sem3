@@ -14,7 +14,7 @@ namespace Shopv2.Controllers
         public async Task<IActionResult> Index()
         {
             // Lấy Product cùng Category để View có thể truy cập item.Category.Name
-            var products = await _context.Product
+            var products = await _context.Products
                 .Include(p => p.Category)
                 .ToListAsync();
 

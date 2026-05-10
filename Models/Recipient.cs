@@ -19,7 +19,5 @@ namespace Shopv2.Models
 
         [MaxLength(1000)]
         public string? Message { get; set; }
-
-        public Order Order { get; set; } = null!;
     }
 }

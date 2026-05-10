@@ -8,9 +8,5 @@ namespace Shopv2.Models
 
         [Required, MaxLength(100)]
         public string Name { get; set; } = string.Empty;
-
-        public ICollection<Bouquet> Bouquets { get; set; } = new List<Bouquet>();
-
-        public ICollection<Message> Messages { get; set; } = new List<Message>();
     }
 }

@@ -9,8 +9,6 @@ namespace Shopv2.Data
             
         }
 
-        public DbSet<Shopv2.Models.Product> Product { get; set; }
-        public DbSet<Shopv2.Models.Category> Category { get; set; }
         public DbSet<User> Users => Set<User>();
         public DbSet<Occasion> Occasions => Set<Occasion>();
         public DbSet<Message> Messages => Set<Message>();
@@ -20,6 +18,7 @@ namespace Shopv2.Data
         public DbSet<Order> Orders => Set<Order>();
         public DbSet<OrderItem> OrderItems => Set<OrderItem>();
         public DbSet<Recipient> Recipients => Set<Recipient>();
+        public DbSet<Product> Products => Set<Product>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -37,40 +36,75 @@ namespace Shopv2.Data
                 .HasIndex(x => x.OrderId)
                 .IsUnique();
 
-            modelBuilder.Entity<User>()
-                .HasOne(x => x.Cart)
-                .WithOne(x => x.User)
-                .HasForeignKey<Cart>(x => x.UserId);
+            modelBuilder.Entity<Bouquet>()
+                .Property(x => x.Price)
+                .HasPrecision(18, 2);
 
-            modelBuilder.Entity<User>()
-                .HasMany(x => x.Orders)
-                .WithOne(x => x.User)
-                .HasForeignKey(x => x.UserId);
+            modelBuilder.Entity<CartItem>()
+                .Property(x => x.UnitPrice)
+                .HasPrecision(18, 2);
 
-            modelBuilder.Entity<Occasion>()
-                .HasMany(x => x.Bouquets)
-                .WithOne(x => x.Occasion)
-                .HasForeignKey(x => x.OccasionId);
+            modelBuilder.Entity<Order>()
+                .Property(x => x.TotalAmount)
+                .HasPrecision(18, 2);
 
-            modelBuilder.Entity<Occasion>()
-                .HasMany(x => x.Messages)
-                .WithOne(x => x.Occasion)
-                .HasForeignKey(x => x.OccasionId);
+            modelBuilder.Entity<OrderItem>()
+                .Property(x => x.UnitPrice)
+                .HasPrecision(18, 2);
+
+            modelBuilder.Entity<Message>()
+                .HasOne<Occasion>()
+                .WithMany()
+                .HasForeignKey(x => x.OccasionId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Bouquet>()
+                .HasOne<Occasion>()
+                .WithMany()
+                .HasForeignKey(x => x.OccasionId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Cart>()
-                .HasMany(x => x.Items)
-                .WithOne(x => x.Cart)
-                .HasForeignKey(x => x.CartId);
+                .HasOne<User>()
+                .WithMany()
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<CartItem>()
+                .HasOne<Cart>()
+                .WithMany()
+                .HasForeignKey(x => x.CartId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<CartItem>()
+                .HasOne<Bouquet>()
+                .WithMany()
+                .HasForeignKey(x => x.BouquetId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Order>()
-                .HasMany(x => x.Items)
-                .WithOne(x => x.Order)
-                .HasForeignKey(x => x.OrderId);
+                .HasOne<User>()
+                .WithMany()
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Order>()
-                .HasOne(x => x.Recipient)
-                .WithOne(x => x.Order)
-                .HasForeignKey<Recipient>(x => x.OrderId);
+            modelBuilder.Entity<OrderItem>()
+                .HasOne<Order>()
+                .WithMany()
+                .HasForeignKey(x => x.OrderId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<OrderItem>()
+                .HasOne<Bouquet>()
+                .WithMany()
+                .HasForeignKey(x => x.BouquetId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Recipient>()
+                .HasOne<Order>()
+                .WithMany()
+                .HasForeignKey(x => x.OrderId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

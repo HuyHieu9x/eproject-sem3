@@ -10,7 +10,5 @@ namespace Shopv2.Models
 
         [Required, MaxLength(500)]
         public string Content { get; set; } = string.Empty;
-
-        public Occasion Occasion { get; set; } = null!;
     }
 }

@@ -31,8 +31,6 @@ namespace Shopv2.Models
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        public Cart? Cart { get; set; }
-
-        public ICollection<Order> Orders { get; set; } = new List<Order>();
+        public string Role { get; set; } = "Customer";
     }
 }
