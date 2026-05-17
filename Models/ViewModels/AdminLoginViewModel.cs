@@ -9,5 +9,7 @@ namespace Shopv2.Models.ViewModels
 
         [Required]
         public string Password { get; set; } = string.Empty;
+
+        public bool RememberMe { get; set; }
     }
 }

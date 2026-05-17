@@ -21,7 +21,7 @@ namespace Shopv2.Models
         public DateTime? Dob { get; set; }
 
         [MaxLength(20)]
-        public string? Gender { get; set; }
+        public int? Gender { get; set; }
 
         [MaxLength(20)]
         public string? Phone { get; set; }

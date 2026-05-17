@@ -44,7 +44,7 @@ namespace Shopv2.Areas.Admin.Controllers
 
             if (user == null)
             {
-                ModelState.AddModelError("", "Invalid credentials");
+                ModelState.AddModelError("", "Tài khoản hoặc mật khẩu không đúng");
                 return View(model);
             }
 
