@@ -1,0 +1,32 @@
+﻿@model Shopv2.Models.Occasion
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Cập nhật Dịp Lễ";
+}
+
+<section class="content pt-4">
+    <div class="container-fluid">
+        <div class="card card-warning">
+            <div class="card-header">
+                <h3 class="card-title">Chỉnh sửa Dịp Lễ</h3>
+            </div>
+            <form asp-action="Edit" method="post">
+                <input type="hidden" asp-for="Id" />
+
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>ID hiện tại: @Model.Id</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="Name">Tên Dịp Lễ</label>
+                        <input type="text" asp-for="Name" class="form-control" id="Name" required>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-warning">Cập nhật</button>
+                    <a asp-action="Index" class="btn btn-default">Quay lại</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,54 @@
+﻿@model Shopv2.Models.Bouquet
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Sửa Bó Hoa";
+}
+
+<section class="content pt-4">
+    <div class="container-fluid">
+        <div class="card card-warning">
+            <div class="card-header">
+                <h3 class="card-title">Cập Nhật Thông Tin Sản Phẩm</h3>
+            </div>
+            <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                <input type="hidden" asp-for="Id" />
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="Name">Tên Bó Hoa</label>
+                        <input type="text" asp-for="Name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="OccasionId">Thuộc Dịp Lễ</label>
+                        <select asp-for="OccasionId" class="form-control" asp-items="ViewBag.OccasionId"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Price">Giá tiền (đ)</label>
+                        <input type="number" asp-for="Price" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Hình ảnh hiện tại</label><br />
+                        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                        {
+                            <img src="@Model.ImageUrl" style="max-width: 150px;" class="img-thumbnail mb-2" />
+                        }
+                        <br />
+                        <label for="ImageUrl">Chọn ảnh mới (Bỏ trống nếu muốn giữ nguyên ảnh cũ)</label>
+                        <input type="file" asp-for="ImageUrl" class="form-control-file" accept="image/*">
+                    </div>
+                    <div class="form-group">
+                        <label for="Description">Mô tả sản phẩm</label>
+                        <textarea asp-for="Description" class="form-control" rows="3">@Model.Description</textarea>
+                    </div>
+                    <div class="form-group form-check">
+                        <input type="checkbox" asp-for="IsActive" class="form-check-input">
+                        <label class="form-check-label" for="IsActive">Kích hoạt hiển thị công khai</label>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-warning">Cập nhật</button>
+                    <a asp-action="Index" class="btn btn-default">Quay lại</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

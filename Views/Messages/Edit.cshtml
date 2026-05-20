@@ -1,0 +1,35 @@
+﻿@model Shopv2.Models.Message
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Chỉnh sửa Lời Chúc";
+}
+
+<section class="content pt-4">
+    <div class="container-fluid">
+        <div class="card card-warning">
+            <div class="card-header">
+                <h3 class="card-title">Cập nhật Lời Chúc</h3>
+            </div>
+            <form asp-action="Edit" method="post">
+                <input type="hidden" asp-for="Id" />
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Đang sửa lời chúc ID: @Model.Id</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="OccasionId">Thay Đổi Dịp Lễ</label>
+                        <select asp-for="OccasionId" class="form-control" asp-items="ViewBag.OccasionId"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Content">Nội Dung Lời Chúc</label>
+                        <textarea asp-for="Content" class="form-control" rows="4" required>@Model.Content</textarea>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-warning">Cập nhật</button>
+                    <a asp-action="Index" class="btn btn-default">Quay lại</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
