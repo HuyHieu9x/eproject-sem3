@@ -1,0 +1,130 @@
+@font-face{
+  font-family:wpbingofont;
+  src:url(../fonts/wpbingo6dbe.eot?fzv6fp);
+  src:url(../fonts/wpbingo6dbe.eot?fzv6fp#iefix) format("embedded-opentype"),url(../fonts/wpbingo6dbe.ttf?fzv6fp) format("truetype"),url(../fonts/wpbingo6dbe.woff?fzv6fp) format("woff"),url(../fonts/wpbingo6dbe.svg?fzv6fp#wpbingo) format("svg");
+  font-weight:400;
+  font-style:normal;
+  font-display:block;
+}
+
+[class*=" wpb-icon-"],[class^=wpb-icon-]{
+  font-family:wpbingofont;
+  speak:none;
+  font-style:normal;
+  font-weight:400;
+  font-variant:normal;
+  text-transform:none;
+  line-height:1;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+
+.wpb-icon-tiktok:before{
+  content:"\e900";
+}
+.wpb-icon-arrow-down:before{
+  content:"\e901";
+}
+.wpb-icon-close:before{
+  content:"\e902";
+}
+.wpb-icon-arrow-left:before{
+  content:"\e903";
+}
+.wpb-icon-arrow-right:before{
+  content:"\e904";
+}
+.wpb-icon-arrow-top:before{
+  content:"\e905";
+}
+.wpb-icon-play-video:before{
+  content:"\e906";
+}
+.wpb-icon-cart-empty:before{
+  content:"\e907";
+}
+.wpb-icon-coupon:before{
+  content:"\e908";
+}
+.wpb-icon-x-twitter:before{
+  content:"\e909";
+}
+.wpb-icon-whatsapp:before{
+  content:"\e910";
+}
+.wpb-icon-youtube:before{
+  content:"\e911";
+}
+.wpb-icon-heart:before{
+  content:"\e912";
+}
+.wpb-icon-message:before{
+  content:"\e913";
+}
+.wpb-icon-star:before{
+  content:"\e914";
+}
+.wpb-icon-eye:before{
+  content:"\e915";
+}
+.wpb-icon-eye-slash:before{
+  content:"\e916";
+}
+.wpb-icon-fill-arrow-down:before{
+  content:"\e917";
+}
+.wpb-icon-fill-arrow-up:before{
+  content:"\e918";
+}
+.wpb-icon-social-share:before{
+  content:"\e919";
+}
+.wpb-icon-behance:before{
+  content:"\e90a";
+}
+.wpb-icon-dribbble:before{
+  content:"\e90b";
+}
+.wpb-icon-facebook-f:before{
+  content:"\e90c";
+}
+.wpb-icon-instagram:before{
+  content:"\e90d";
+}
+.wpb-icon-linkedin-in:before{
+  content:"\e90e";
+}
+.wpb-icon-pinterest:before{
+  content:"\e90f";
+}
+.wpb-icon-back-arrow:before{
+  content:"\e91a";
+}
+.wpb-icon-star-fill:before{
+  content:"\e91b";
+}
+.wpb-icon-car-shipping:before{
+  content:"\e91c";
+}
+.wpb-icon-car-shipping-2:before{
+  content:"\e91d";
+}
+.wpb-icon-copy:before{
+  content:"\e91e";
+}
+.wpb-icon-plus:before{
+  content:"\e91f";
+}
+.wpb-icon-minus:before{
+  content:"\e920";
+}
+.wpb-icon-remove:before{
+  content:"\e921";
+}
+.wpb-icon-hearted:before{
+  content:"\e922";
+}
+.wpb-icon-compare:before{
+  content:"\e923";
+}

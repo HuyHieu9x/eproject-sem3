@@ -34,12 +34,12 @@ namespace Shopv2.Controllers
             return View("index");
         }
 
-        [HttpGet("register")]
-        public IActionResult register()
-        {
+        //[HttpGet("register")]
+        //public IActionResult register()
+        //{
 
-            return View("register");
-        }
+        //    return View("register");
+        //}
 
         [HttpPost("register")]
         public IActionResult Register(RegisterViewModel model)
@@ -60,13 +60,13 @@ namespace Shopv2.Controllers
 
             var user = new User();
 
-            user.FirstName = model.FirstName;
-            user.LastName = model.LastName;
+            //user.FirstName = model.FirstName;
+            //user.LastName = model.LastName;
+            //user.Phone = model.Phone;
+            //user.Address = model.Address;
+            //user.Dob = model.Dob;
+            //user.Gender = model.Gender;
             user.Email = model.Username;
-            user.Phone = model.Phone;
-            user.Address = model.Address;
-            user.Dob = model.Dob;
-            user.Gender = model.Gender;
             user.Role = "Client";
 
             var passwordHasher = new PasswordHasher<User>();
@@ -78,7 +78,7 @@ namespace Shopv2.Controllers
 
             TempData["success"] = "Register success";
 
-            return Redirect("/my-account");
+            return Redirect("/");
         }
 
         [HttpPost("")]

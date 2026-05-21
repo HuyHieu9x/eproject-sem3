@@ -1,0 +1,42 @@
+@font-face {
+  font-family: 'elementor';
+  src:url(../fonts/elementord272.eot?12sl2b);
+  src:url(../fonts/elementord272.eot?12sl2b#iefix) format("embedded-opentype"),url(../fonts/elementord272.ttf?12sl2b) format("truetype"),url(../fonts/elementord272.woff?12sl2b) format("woff"),url(../fonts/elementord272.svg?12sl2b#elementor) format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="wpbicon-"], [class*=" wpbicon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  display: inline-block;
+  font-family: 'elementor' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.wpbicon-brand:before {
+  content: "\e900";
+}
+.wpbicon-coupon:before {
+  content: "\e901";
+}
+.wpbicon-instagram:before {
+  content: "\e902";
+}
+.wpbicon-marquee:before {
+  content: "\e903";
+}
+.wpbicon-team:before {
+  content: "\e904";
+}
+.wpbicon-countdown-sale:before {
+  content: "\e905";
+}
