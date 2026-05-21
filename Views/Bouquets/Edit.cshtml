@@ -1,17 +1,20 @@
 ﻿@model Shopv2.Models.Bouquet
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    ViewData["Title"] = "Sửa Bó Hoa";
+    ViewData["Title"] = "Chỉnh Sửa Bó Hoa";
 }
 
 <section class="content pt-4">
     <div class="container-fluid">
         <div class="card card-warning">
             <div class="card-header">
-                <h3 class="card-title">Cập Nhật Thông Tin Sản Phẩm</h3>
+                <h3 class="card-title">Chỉnh Sửa Sản Phẩm Hoa</h3>
             </div>
+            <!-- BẮT BUỘC có enctype="multipart/form-data" -->
             <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                <!-- Giữ ID ẩn để Controller biết đang sửa bản ghi nào -->
                 <input type="hidden" asp-for="Id" />
+
                 <div class="card-body">
                     <div class="form-group">
                         <label for="Name">Tên Bó Hoa</label>
@@ -19,25 +22,37 @@
                     </div>
                     <div class="form-group">
                         <label for="OccasionId">Thuộc Dịp Lễ</label>
-                        <select asp-for="OccasionId" class="form-control" asp-items="ViewBag.OccasionId"></select>
+                        <select asp-for="OccasionId" class="form-control" asp-items="ViewBag.OccasionId" required></select>
                     </div>
                     <div class="form-group">
                         <label for="Price">Giá tiền (đ)</label>
                         <input type="number" asp-for="Price" class="form-control" required>
                     </div>
+
                     <div class="form-group">
-                        <label>Hình ảnh hiện tại</label><br />
-                        @if (!string.IsNullOrEmpty(Model.ImageUrl))
-                        {
-                            <img src="@Model.ImageUrl" style="max-width: 150px;" class="img-thumbnail mb-2" />
-                        }
-                        <br />
-                        <label for="ImageUrl">Chọn ảnh mới (Bỏ trống nếu muốn giữ nguyên ảnh cũ)</label>
-                        <input type="file" asp-for="ImageUrl" class="form-control-file" accept="image/*">
+                        <label>Các hình ảnh hiện tại</label>
+                        <div class="d-flex flex-wrap gap-2 mb-2">
+                            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                            {
+                                // Tách chuỗi bằng dấu phẩy thành mảng để duyệt vòng lặp hiển thị từng ảnh
+                                var images = Model.ImageUrl.Split(',');
+                                foreach (var imgUrl in images)
+                                {
+                                    <img src="@imgUrl" alt="Ảnh sản phẩm" class="img-thumbnail mr-2" style="max-width: 100px; max-height: 100px;" />
+                                }
+                            }
+                            else
+                            {
+                                <span class="text-muted">Chưa có ảnh</span>
+                            }
+                        </div>
+                        <label for="ImageFiles">Chọn loạt ảnh mới để thay thế hoàn toàn (Bỏ trống nếu giữ nguyên)</label>
+                        <input type="file" name="ImageFiles" class="form-control-file" accept="image/*" multiple>
                     </div>
+
                     <div class="form-group">
                         <label for="Description">Mô tả sản phẩm</label>
-                        <textarea asp-for="Description" class="form-control" rows="3">@Model.Description</textarea>
+                        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
                     </div>
                     <div class="form-group form-check">
                         <input type="checkbox" asp-for="IsActive" class="form-check-input">
@@ -45,7 +60,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-warning">Cập nhật</button>
+                    <button type="submit" class="btn btn-warning">Cập nhật sản phẩm</button>
                     <a asp-action="Index" class="btn btn-default">Quay lại</a>
                 </div>
             </form>

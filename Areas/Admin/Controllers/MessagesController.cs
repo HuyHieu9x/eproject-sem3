@@ -36,9 +36,6 @@ namespace Shopv2.Controllers
         [HttpPost]
         public IActionResult Create(Message message)
         {
-            // Tự động tăng Id thủ công bằng code (do DB không cài identity)
-            int maxId = _context.Messages.Any() ? _context.Messages.Max(m => m.Id) : 0;
-            message.Id = maxId + 1;
 
             _context.Messages.Add(message);
             _context.SaveChanges();

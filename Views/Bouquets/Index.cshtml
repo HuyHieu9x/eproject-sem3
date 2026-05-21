@@ -39,14 +39,16 @@
                         {
                             <tr>
                                 <td>@item.Id</td>
-                                <td class="text-center">
+                                <td>
                                     @if (!string.IsNullOrEmpty(item.ImageUrl))
                                     {
-                                        <img src="@item.ImageUrl" style="width: 60px; height: 60px; object-fit: cover;" class="img-thumbnail" />
+                                        // Lấy tấm ảnh đầu tiên trước dấu phẩy làm ảnh đại diện
+                                        var firstImage = item.ImageUrl.Split(',')[0];
+                                        <img src="@firstImage" alt="Ảnh đại diện" style="max-width: 60px; height: auto;" class="img-thumbnail" />
                                     }
                                     else
                                     {
-                                        <span class="badge badge-secondary">No img</span>
+                                        <span>Không có ảnh</span>
                                     }
                                 </td>
                                 <td>@item.Name</td>

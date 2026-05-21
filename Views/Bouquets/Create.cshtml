@@ -24,10 +24,14 @@
                         <label for="Price">Giá tiền (đ)</label>
                         <input type="number" asp-for="Price" class="form-control" value="0" required>
                     </div>
+
+                    <!-- SỬA DÒNG NÀY: Thay asp-for="ImageUrl" bằng asp-for="ImageFile" -->
                     <div class="form-group">
-                        <label for="ImageUrl">Tải lên hình ảnh</label>
-                        <input type="file" asp-for="ImageUrl" class="form-control-file" accept="image/*" required>
+                        <label>Tải lên hình ảnh sản phẩm (Có thể chọn nhiều ảnh)</label>
+                        <!-- THÊM thuộc tính multiple và ĐỔI tên thành ImageFiles -->
+                        <input type="file" name="ImageFiles" class="form-control-file" accept="image/*" multiple />
                     </div>
+
                     <div class="form-group">
                         <label for="Description">Mô tả sản phẩm</label>
                         <textarea asp-for="Description" class="form-control" rows="3"></textarea>

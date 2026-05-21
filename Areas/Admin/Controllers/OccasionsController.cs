@@ -30,9 +30,6 @@ namespace Shopv2.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Create(Occasion occasion)
         {
-            // Do DB không tự tăng Id, lấy Id lớn nhất hiện tại + 1
-            int maxId = _context.Occasions.Any() ? _context.Occasions.Max(o => o.Id) : 0;
-            occasion.Id = maxId + 1;
 
             _context.Occasions.Add(occasion);
             _context.SaveChanges();

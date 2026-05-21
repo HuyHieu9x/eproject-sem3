@@ -35,27 +35,38 @@ namespace Shopv2.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Bouquet bouquet)
+        public IActionResult Create(Bouquet bouquet, List<IFormFile>? ImageFiles) // Đổi thành List<IFormFile>
         {
-            // Tự tăng ID bằng code
-            int maxId = _context.Bouquets.Any() ? _context.Bouquets.Max(b => b.Id) : 0;
-            bouquet.Id = maxId + 1;
             bouquet.CreatedAt = DateTime.Now;
 
-            // Xử lý Upload ảnh nếu có file
-            if (bouquet.ImageFile != null)
+            // Kiểm tra xem danh sách file đẩy lên có phần tử nào không
+            if (ImageFiles != null && ImageFiles.Count > 0)
             {
                 string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
                 if (!Directory.Exists(uploadsFolder)) Directory.CreateDirectory(uploadsFolder);
 
-                string uniqueFileName = Guid.NewGuid().ToString() + "_" + bouquet.ImageFile.FileName;
-                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                // Tạo một list để chứa các đường dẫn ảnh mới tạo ra
+                var imagePaths = new List<string>();
 
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                foreach (var file in ImageFiles)
                 {
-                    bouquet.ImageFile.CopyTo(fileStream);
+                    if (file.Length > 0)
+                    {
+                        string uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+                        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            file.CopyTo(fileStream);
+                        }
+
+                        imagePaths.Add("/images/" + uniqueFileName);
+                    }
                 }
-                bouquet.ImageUrl = "/images/" + uniqueFileName;
+
+                // Gộp các đường dẫn lại thành 1 chuỗi, ngăn cách bằng dấu phẩy ',' để lưu vào DB
+                // Ví dụ kết quả: "/images/img1.jpg,/images/img2.jpg"
+                bouquet.ImageUrl = string.Join(",", imagePaths);
             }
 
             _context.Bouquets.Add(bouquet);
@@ -74,9 +85,8 @@ namespace Shopv2.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(Bouquet bouquet)
+        public IActionResult Edit(Bouquet bouquet, List<IFormFile>? ImageFiles) // Đổi thành List<IFormFile>
         {
-            // Lấy thực thể gốc từ DB để giữ lại ảnh cũ nếu người dùng không chọn ảnh mới
             var existingBouquet = _context.Bouquets.FirstOrDefault(b => b.Id == bouquet.Id);
             if (existingBouquet == null) return NotFound();
 
@@ -86,26 +96,44 @@ namespace Shopv2.Controllers
             existingBouquet.OccasionId = bouquet.OccasionId;
             existingBouquet.IsActive = bouquet.IsActive;
 
-            // Nếu có upload ảnh mới
-            if (bouquet.ImageUrl != null)
+            // Nếu người dùng chọn tải lên danh sách ảnh mới để thay thế
+            if (ImageFiles != null && ImageFiles.Count > 0)
             {
                 string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
-                string uniqueFileName = Guid.NewGuid().ToString() + "_" + bouquet.ImageUrl.FileName;
-                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                if (!Directory.Exists(uploadsFolder)) Directory.CreateDirectory(uploadsFolder);
 
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    bouquet.ImageUrl.CopyTo(fileStream);
-                }
-
-                // Xóa ảnh cũ trên server (nếu muốn dọn rác ổ đĩa)
+                // 1. XÓA TẤT CẢ ẢNH CŨ trên server để tránh rác bộ nhớ
                 if (!string.IsNullOrEmpty(existingBouquet.ImageUrl))
                 {
-                    string oldPath = Path.Combine(_webHostEnvironment.WebRootPath, existingBouquet.ImageUrl.TrimStart('/'));
-                    if (System.IO.File.Exists(oldPath)) System.IO.File.Delete(oldPath);
+                    // Tách chuỗi ngược lại thành danh sách các file ảnh cũ
+                    var oldPaths = existingBouquet.ImageUrl.Split(',');
+                    foreach (var oldPath in oldPaths)
+                    {
+                        string fullOldPath = Path.Combine(_webHostEnvironment.WebRootPath, oldPath.TrimStart('/'));
+                        if (System.IO.File.Exists(fullOldPath)) System.IO.File.Delete(fullOldPath);
+                    }
                 }
 
-                existingBouquet.ImageUrl = "/images/" + uniqueFileName;
+                // 2. LƯU LOẠT ẢNH MỚI
+                var newImagePaths = new List<string>();
+                foreach (var file in ImageFiles)
+                {
+                    if (file.Length > 0)
+                    {
+                        string uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+                        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            file.CopyTo(fileStream);
+                        }
+
+                        newImagePaths.Add("/images/" + uniqueFileName);
+                    }
+                }
+
+                // Cập nhật lại chuỗi ảnh mới vào database
+                existingBouquet.ImageUrl = string.Join(",", newImagePaths);
             }
 
             _context.Bouquets.Update(existingBouquet);
@@ -119,7 +147,6 @@ namespace Shopv2.Controllers
             var bouquet = _context.Bouquets.FirstOrDefault(b => b.Id == id);
             if (bouquet != null)
             {
-                // Xóa file ảnh vật lý trước khi xóa bản ghi dữ liệu
                 if (!string.IsNullOrEmpty(bouquet.ImageUrl))
                 {
                     string imgPath = Path.Combine(_webHostEnvironment.WebRootPath, bouquet.ImageUrl.TrimStart('/'));
