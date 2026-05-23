@@ -16,8 +16,13 @@ namespace Shopv2.Models
         [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
 
+        // Cột này để lưu đường dẫn ảnh vào Database (ví dụ: "/images/abc.jpg")
         [MaxLength(500)]
         public string? ImageUrl { get; set; }
+
+        // THÊM THUỘC TÍNH NÀY: Để hứng file từ thẻ <input type="file"> ở View
+        [NotMapped]
+        List<IFormFile>? ImageFiles { get; set; }
 
         public int OccasionId { get; set; }
 

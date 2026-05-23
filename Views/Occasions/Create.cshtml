@@ -1,0 +1,28 @@
+﻿@model Shopv2.Models.Occasion
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Thêm mới Dịp Lễ";
+}
+
+<section class="content pt-4">
+    <div class="container-fluid">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Thêm mới Dịp Lễ</h3>
+            </div>
+            <form asp-action="Create" method="post">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="Name">Tên Dịp Lễ</label>
+                        <input type="text" asp-for="Name" class="form-control" id="Name" placeholder="Nhập tên dịp lễ (Ví dụ: Valentine)" required>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Lưu lại</button>
+                    <a asp-action="Index" class="btn btn-default">Quay lại</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
