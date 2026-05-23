@@ -1,7 +1,14 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
+<style>
+	.page-title {
+		height: 300px;
+		background-size: cover;
+		background-position: center;
+		background-repeat: no-repeat;
+	}
+</style>
 <div class="bwp-header bwp-mobile_offcanvas bwp-offcanvas-menu">
 	<a class="mobile-menu-close" href="#" title="Close mobile menu"><i class="bwp-svg-icon icon-cancel"><svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 329.269 329"><path d="M194.8 164.77 323.013 36.555c8.343-8.34 8.343-21.825 0-30.164-8.34-8.34-21.825-8.34-30.164 0L164.633 134.605 36.422 6.391c-8.344-8.34-21.824-8.34-30.164 0-8.344 8.34-8.344 21.824 0 30.164l128.21 128.215L6.259 292.984c-8.344 8.34-8.344 21.825 0 30.164a21.266 21.266 0 0 0 15.082 6.25c5.46 0 10.922-2.09 15.082-6.25l128.21-128.214 128.216 128.214a21.273 21.273 0 0 0 15.082 6.25c5.46 0 10.922-2.09 15.082-6.25 8.343-8.34 8.343-21.824 0-30.164zm0 0" fill="#222222"></path></svg></i></a>
 	<div class="bwp-mobile-offcanvas-rows">
@@ -1091,7 +1098,8 @@
 	</div>
 </div>
 <div id="bwp-main" class="bwp-main">
-	<div data-bg_default="https://floomi.wpbingosite.com/~/client/wp-content/themes/floomi/assets/images/bg-breadcrumb.jpg" class="page-title bwp-title light" style="background-image:url(~/client/wp-content/themes/floomi/assets/images/bg-breadcrumb.jpg);">
+	<div class="page-title bwp-title light"
+		 style="background-image:url('/client/wp-content/themes/floomi/assets/images/bg-breadcrumb.jpg');">
 		<div class="container">
 			<div class="content-title-heading">
 				<span class="back-to-shop">Shop</span>

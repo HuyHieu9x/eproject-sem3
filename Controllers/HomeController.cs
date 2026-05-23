@@ -77,23 +77,24 @@ namespace Shopv2.Controllers
             TempData["success"] = "Register success";
 
             TempData["showLogin"] = "1";
-            return Redirect("/");
+            return Redirect("/login");
         }
 
         [HttpGet("login")]
-        public IActionResult login()
+        public IActionResult Login()
         {
 
             return View("login");
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Index(AdminLoginViewModel model)
+        public async Task<IActionResult> Login(AdminLoginViewModel model)
         {
             Console.WriteLine("Vao day");
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid) {
                 return View(model);
-
+            }
+                
             var user = await _context.Users
                 .FirstOrDefaultAsync(x =>
                     x.Email == model.Email &&
@@ -227,7 +228,7 @@ namespace Shopv2.Controllers
             TempData["success"] =
                 "New password has been sent to your email";
 
-            return Redirect("/my-account");
+            return Redirect("/login");
         }
 
 

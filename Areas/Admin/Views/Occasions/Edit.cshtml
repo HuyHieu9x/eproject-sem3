@@ -10,7 +10,7 @@
             <div class="card-header">
                 <h3 class="card-title">Chỉnh sửa Dịp Lễ</h3>
             </div>
-            <form asp-action="Edit" method="post">
+            <form asp-action="edit" method="post" asp-route-id="@Model.Id">
                 <input type="hidden" asp-for="Id" />
 
                 <div class="card-body">

@@ -7,7 +7,7 @@ namespace Shopv2.Models.ViewModels
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
 
-        [Required(ErrorMessage = "Email is required")]
+        [Required(ErrorMessage = "Username is required")]
         [EmailAddress]
         public string Username { get; set; }
 
