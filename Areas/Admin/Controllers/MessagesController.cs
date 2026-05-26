@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Shopv2.Data;
 using Shopv2.Models;
@@ -6,6 +7,9 @@ using System.Linq;
 
 namespace Shopv2.Controllers
 {
+    [Area("Admin")]
+    [Authorize(Roles = "Admin")]
+    [Route("admin/messages")]
     public class MessagesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -16,6 +20,7 @@ namespace Shopv2.Controllers
         }
 
         // 1. READ - Danh sách Lời chúc
+        [HttpGet("")]
         public IActionResult Index()
         {
             var messages = _context.Messages.ToList();
@@ -26,6 +31,7 @@ namespace Shopv2.Controllers
         }
 
         // 2. CREATE - Giao diện Thêm mới
+        [HttpGet("create")]
         public IActionResult Create()
         {
             // Truyền danh sách dịp lễ sang Form để làm thẻ <select> dropdown
@@ -33,7 +39,7 @@ namespace Shopv2.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         public IActionResult Create(Message message)
         {
 
@@ -43,6 +49,7 @@ namespace Shopv2.Controllers
         }
 
         // 3. UPDATE - Giao diện Sửa
+        [HttpGet("edit/{id}")]
         public IActionResult Edit(int id)
         {
             var message = _context.Messages.FirstOrDefault(m => m.Id == id);
@@ -53,7 +60,7 @@ namespace Shopv2.Controllers
             return View(message);
         }
 
-        [HttpPost]
+        [HttpPost("edit/{id}")]
         public IActionResult Edit(Message message)
         {
             _context.Messages.Update(message);
@@ -62,6 +69,7 @@ namespace Shopv2.Controllers
         }
 
         // 4. DELETE - Xóa tin nhắn
+        [HttpGet("delete/{id}")]
         public IActionResult Delete(int id)
         {
             var message = _context.Messages.FirstOrDefault(m => m.Id == id);

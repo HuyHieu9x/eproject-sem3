@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Shopv2.Data;
 using Shopv2.Models;
@@ -8,6 +9,9 @@ using System.Linq;
 
 namespace Shopv2.Controllers
 {
+    [Area("Admin")]
+    [Authorize(Roles = "Admin")]
+    [Route("admin/bouquets")]
     public class BouquetsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -20,6 +24,7 @@ namespace Shopv2.Controllers
         }
 
         // 1. READ - Danh sách sản phẩm hoa
+        [HttpGet("")]
         public IActionResult Index()
         {
             var bouquets = _context.Bouquets.ToList();
@@ -28,13 +33,14 @@ namespace Shopv2.Controllers
         }
 
         // 2. CREATE - Giao diện thêm
+        [HttpGet("create")]
         public IActionResult Create()
         {
             ViewBag.OccasionId = new SelectList(_context.Occasions, "Id", "Name");
             return View();
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         public IActionResult Create(Bouquet bouquet, List<IFormFile>? ImageFiles) // Đổi thành List<IFormFile>
         {
             bouquet.CreatedAt = DateTime.Now;
@@ -75,6 +81,7 @@ namespace Shopv2.Controllers
         }
 
         // 3. UPDATE - Giao diện sửa
+        [HttpGet("edit/{id}")]
         public IActionResult Edit(int id)
         {
             var bouquet = _context.Bouquets.FirstOrDefault(b => b.Id == id);
@@ -84,7 +91,7 @@ namespace Shopv2.Controllers
             return View(bouquet);
         }
 
-        [HttpPost]
+        [HttpPost("edit/{id}")]
         public IActionResult Edit(Bouquet bouquet, List<IFormFile>? ImageFiles) // Đổi thành List<IFormFile>
         {
             var existingBouquet = _context.Bouquets.FirstOrDefault(b => b.Id == bouquet.Id);
@@ -142,6 +149,7 @@ namespace Shopv2.Controllers
         }
 
         // 4. DELETE - Xóa hoa
+        [HttpGet("delete/{id}")]
         public IActionResult Delete(int id)
         {
             var bouquet = _context.Bouquets.FirstOrDefault(b => b.Id == id);
