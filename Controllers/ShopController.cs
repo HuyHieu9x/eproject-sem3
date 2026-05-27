@@ -17,7 +17,7 @@ namespace Shopv2.Controllers
             _context = context;
         }
 
-        public IActionResult Index(int? occasionId, int page = 1, int pageSize = 9)
+        public IActionResult Index(int? occasionId, int page = 1, int pageSize = 2)
         {
             // Đảm bảo số trang tối thiểu là 1
             page = Math.Max(1, page);
