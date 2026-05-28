@@ -1,0 +1,204 @@
+﻿@model List<Shopv2.Models.Order>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+	.page-title {
+		height: 300px !important;
+		background-image: url('/client/wp-content/themes/floomi/assets/images/bg-breadcrumb.jpg') !important;
+		background-size: cover !important;
+		background-position: center center !important;
+		background-repeat: no-repeat !important;
+		display: flex !important;
+		align-items: center !important;
+		position: relative;
+	}
+
+		.page-title::before {
+			content: "";
+			position: absolute;
+			inset: 0;
+			background: rgba(0,0,0,0.3);
+		}
+
+		.page-title .container {
+			position: relative;
+			z-index: 2;
+		}
+
+	.text-title-heading,
+	.back-to-shop,
+	#breadcrumb,
+	#breadcrumb a,
+	#breadcrumb span {
+		color: white !important;
+	}
+
+    .cart-quantity {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .qty-btn {
+        width: 32px;
+        height: 32px;
+        border: none;
+        border-radius: 50%;
+        background: #000;
+        color: #fff;
+        cursor: pointer;
+        font-size: 18px;
+        transition: 0.3s;
+    }
+
+        .qty-btn:hover {
+            opacity: 0.8;
+        }
+
+    .qty-number {
+        min-width: 30px;
+        text-align: center;
+        font-weight: 600;
+        font-size: 16px;
+    }
+
+    .delete-btn {
+        border: none;
+        background: #dc3545;
+        color: #fff;
+        padding: 8px 14px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+        .delete-btn:hover {
+            opacity: 0.8;
+        }
+
+    .cart-product-img {
+        width: 90px;
+        height: 90px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+</style>
+<div id="bwp-main" class="bwp-main">
+	<div class="page-title bwp-title light">
+		<div class="container">
+			<div class="content-title-heading">
+				<span class="back-to-shop">Shop</span>
+				<h1 class="text-title-heading">
+					Order
+				</h1>
+			</div><!-- Page Title -->
+			<div id="breadcrumb" class="breadcrumb"><div class="bwp-breadcrumb"><a href="../index.html">Home</a> <span class="delimiter">/</span> <span class="current">Order</span> </div></div>
+		</div>
+	</div><!-- .container -->
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 col-md-12">
+				<div id="main-content" class="main-content">
+					<div id="primary" class="content-area">
+						<div id="content" class="site-content" role="main">
+							<article id="post-17" class="post-17 page type-page status-publish hentry">
+								<div class="entry-content clearfix">
+                                    <div class="container mt-5 mb-5">
+
+                                        <h2>Order List</h2>
+
+                                        @if (!Model.Any())
+                                        {
+                                            <div class="alert alert-warning">
+                                                Order list is empty
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <table class="table table-bordered">
+
+                                                <thead>
+                                                    <tr class="text-center">
+                                                        <th><strong>No</strong></th>
+                                                        <th><strong>Payment Method</strong></th>
+                                                        <th><strong>Payment Status</strong></th>
+                                                        <th><strong>Order Status</strong></th>
+                                                        <th><strong>Order Time</strong></th>
+                                                        <th><strong>Delivery Time</strong></th>
+                                                        <th><strong>Total Price</strong></th>
+                                                        <th><strong>Action</strong></th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+
+                                                    @{
+                                                        int no = 1;
+                                                    }
+
+                                                    @foreach (var order in Model)
+                                                    {
+                                                        <tr class="text-center">
+
+                                                            <td>@no</td>
+
+                                                            <td>@order.PaymentMethod</td>
+                                                            @{
+                                                                string paymentStatusNm = order.PaymentStatus == "Y" ? "Paid Done" : "Not Paid Yet";
+                                                            }
+                                                            <td class="text-left">@paymentStatusNm</td>
+                                                            @{
+                                                                string statusNm = "";
+                                                                if (order.Status == "OC")
+                                                                {
+                                                                    statusNm = "Order Created";
+                                                                } else if(order.Status == "OB")
+                                                                {
+                                                                    statusNm = "Order Booked";
+                                                                }
+                                                                else if (order.Status == "OT")
+                                                                {
+                                                                    statusNm = "Transporting";
+                                                                }
+                                                                else if (order.Status == "OS")
+                                                                {
+                                                                    statusNm = "Order Success";
+                                                                }
+                                                                else if (order.Status == "CO")
+                                                                {
+                                                                    statusNm = "Order Cancelled";
+                                                                }
+                                                            }
+                                                            <td class="text-left">@statusNm</td>
+                                                            <td class="text-left">@order.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                                            <td class="text-left">@order.DeliveryDate?.ToString("yyyy-MM-dd HH:mm")</td>
+                                                            <td class="text-right">@order.TotalAmount.ToString("N0")</td>
+
+                                                            <td>
+                                                                <a asp-action="Detail" asp-route-id="@order.Id" class="btn btn-warning btn-sm"> Detail</a>
+                                                            </td>
+
+                                                        </tr>
+
+                                                        no++;
+                                                    }
+
+                                                </tbody>
+
+                                            </table>
+                                        }
+
+                                    </div>
+								</div><!-- .entry-content -->
+							</article><!-- #post-## -->
+						</div><!-- #content -->
+					</div><!-- #primary -->
+				</div><!-- #main-content -->
+			</div>
+		</div>
+	</div>
+</div><!-- #main -->

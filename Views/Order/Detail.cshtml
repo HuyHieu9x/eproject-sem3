@@ -1,0 +1,884 @@
+﻿@model Shopv2.Models.ViewModels.OrderDetailViewModel
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .page-title {
+        height: 300px !important;
+        background-image: url('/client/wp-content/themes/floomi/assets/images/bg-breadcrumb.jpg') !important;
+        background-size: cover !important;
+        background-position: center center !important;
+        background-repeat: no-repeat !important;
+        display: flex !important;
+        align-items: center !important;
+        position: relative;
+    }
+
+        .page-title::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.3);
+        }
+
+        .page-title .container {
+            position: relative;
+            z-index: 2;
+        }
+
+    .text-title-heading,
+    .back-to-shop,
+    #breadcrumb,
+    #breadcrumb a,
+    #breadcrumb span {
+        color: white !important;
+    }
+
+    .cart-quantity {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .qty-btn {
+        width: 32px;
+        height: 32px;
+        border: none;
+        border-radius: 50%;
+        background: #000;
+        color: #fff;
+        cursor: pointer;
+        font-size: 18px;
+        transition: 0.3s;
+    }
+
+        .qty-btn:hover {
+            opacity: 0.8;
+        }
+
+    .qty-number {
+        min-width: 30px;
+        text-align: center;
+        font-weight: 600;
+        font-size: 16px;
+    }
+
+    .delete-btn {
+        border: none;
+        background: #dc3545;
+        color: #fff;
+        padding: 8px 14px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+        .delete-btn:hover {
+            opacity: 0.8;
+        }
+
+    .cart-product-img {
+        width: 90px;
+        height: 90px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .no-border-table,
+    .no-border-table td,
+    .no-border-table th,
+    .no-border-table tr {
+        border: none !important;
+    }
+
+        /* Remove left padding for first column */
+        .no-border-table td {
+            padding-left: 0 !important;
+        }
+
+    /*Credit Card Style*/
+
+    .credit-modal * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        outline: none;
+        border: none;
+        text-decoration: none;
+        text-transform: uppercase;
+    }
+    /* credit-modal */
+    .credit-modal {
+        position: fixed;
+        inset: 0;
+        /* overlay màu gradient trong suốt */
+        background: linear-gradient(135deg, rgba(138, 43, 226, 0.18), rgba(255, 20, 147, 0.18));
+        /* hiệu ứng kính mờ */
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        overflow: auto;
+        z-index: 1000;
+        /* hiệu ứng mượt */
+        animation: fadeBg .3s ease;
+    }
+    /*Modal Credit Card*/
+    .credit-modal * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        outline: none;
+        border: none;
+        text-decoration: none;
+        text-transform: uppercase;
+    }
+    /* credit-modal */
+    .credit-modal {
+        position: fixed;
+        inset: 0;
+        /* overlay màu gradient trong suốt */
+        background: linear-gradient(135deg, rgba(138, 43, 226, 0.18), rgba(255, 20, 147, 0.18));
+        /* hiệu ứng kính mờ */
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        overflow: auto;
+        z-index: 1000;
+        /* hiệu ứng mượt */
+        animation: fadeBg .3s ease;
+    }
+
+    /* credit-modal Content */
+    .credit-modal-content {
+        position: relative;
+        width: 100%;
+        max-width: 700px;
+        animation: popup .3s ease;
+    }
+
+    /* Close Button */
+    .close-btn {
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #fff;
+        color: #333;
+        font-size: 22px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+        z-index: 10;
+    }
+
+    /* Container */
+    .credit-container {
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(15px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-flow: column;
+        padding: 50px 0;
+        border-radius: 20px;
+    }
+
+        .credit-container form {
+            position: relative;
+            z-index: 1;
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, .1);
+            padding: 20px;
+            width: 600px;
+            padding-top: 160px;
+        }
+
+            .credit-container form .inputBox {
+                margin-top: 20px;
+            }
+
+                .credit-container form .inputBox span {
+                    display: block;
+                    color: #999;
+                    padding-bottom: 5px;
+                }
+
+                .credit-container form .inputBox input,
+                .credit-container form .inputBox select {
+                    width: 100%;
+                    padding: 10px;
+                    border-radius: 10px;
+                    border: 1px solid rgba(0, 0, 0, .3);
+                    color: #444;
+                }
+
+            .credit-container form .flexbox {
+                display: flex;
+                gap: 15px;
+            }
+
+                .credit-container form .flexbox .inputBox {
+                    flex: 1 1 150px;
+                }
+
+            .credit-container form .submit-btn {
+                width: 100%;
+                background: linear-gradient(45deg, blueviolet, deeppink);
+                margin-top: 20px;
+                padding: 10px;
+                font-size: 20px;
+                color: #fff;
+                border-radius: 10px;
+                cursor: pointer;
+                transition: .2s linear;
+            }
+
+                .credit-container form .submit-btn:hover {
+                    letter-spacing: 2px;
+                    opacity: .8;
+                }
+
+        /* Card */
+        .credit-container .card-container {
+            margin-bottom: -150px;
+            position: absolute;
+            top: -5%;
+            height: 250px;
+            width: 450px;
+            z-index: 10;
+        }
+
+            .credit-container .card-container .front {
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                top: 0;
+                left: 0;
+                background: linear-gradient(45deg, blueviolet, deeppink);
+                border-radius: 5px;
+                backface-visibility: hidden;
+                box-shadow: 0 15px 25px rgba(0, 0, 0, .2);
+                padding: 20px;
+                transform: perspective(1000px) rotateY(0deg);
+                transition: transform .4s ease-out;
+            }
+
+                .credit-container .card-container .front .image {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding-top: 10px;
+                }
+
+                    .credit-container .card-container .front .image img {
+                        height: 50px;
+                    }
+
+                .credit-container .card-container .front .card-number-box {
+                    padding: 30px 0;
+                    font-size: 22px;
+                    color: #fff;
+                }
+
+                .credit-container .card-container .front .flexbox {
+                    display: flex;
+                }
+
+                    .credit-container .card-container .front .flexbox .box:nth-child(1) {
+                        margin-right: auto;
+                    }
+
+                    .credit-container .card-container .front .flexbox .box {
+                        font-size: 15px;
+                        color: #fff;
+                    }
+
+            .credit-container .card-container .back {
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 100%;
+                background: linear-gradient(45deg, blueviolet, deeppink);
+                border-radius: 5px;
+                padding: 20px 0;
+                text-align: right;
+                backface-visibility: hidden;
+                box-shadow: 0 15px 25px rgba(0, 0, 0, .2);
+                transform: perspective(1000px) rotateY(180deg);
+                transition: transform .4s ease-out;
+            }
+
+                .credit-container .card-container .back .stripe {
+                    background: #000;
+                    width: 100%;
+                    margin: 10px 0;
+                    height: 50px;
+                }
+
+                .credit-container .card-container .back .box {
+                    padding: 0 20px;
+                }
+
+                    .credit-container .card-container .back .box span {
+                        color: #fff;
+                        font-size: 15px;
+                    }
+
+                    .credit-container .card-container .back .box .cvv-box {
+                        height: 50px;
+                        padding: 10px;
+                        margin-top: 5px;
+                        color: #333;
+                        background: #fff;
+                        border-radius: 5px;
+                        width: 100%;
+                    }
+
+                    .credit-container .card-container .back .box img {
+                        margin-top: 30px;
+                        height: 30px;
+                    }
+
+    @@keyframes popup {
+        from {
+        opacity: 0;
+        transform: scale(.9);
+        }
+
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    @@media(max - width:650px) {
+        .credit-container form{
+        width: 100%;
+        }
+
+        .credit-container .card-container {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .credit-container form .flexbox {
+            flex-wrap: wrap;
+        }
+
+    }
+
+    @@keyframes fadeBg {
+        from{
+        opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+</style>
+
+<div id="bwp-main" class="bwp-main">
+    <div class="page-title bwp-title light">
+        <div class="container">
+            <div class="content-title-heading">
+                <span class="back-to-shop">Shop</span>
+                <h1 class="text-title-heading">
+                    Order
+                </h1>
+            </div><!-- Page Title -->
+            <div id="breadcrumb" class="breadcrumb"><div class="bwp-breadcrumb"><a href="../index.html">Home</a> <span class="delimiter">/</span> <span class="current">Order</span>/</span> <span class="current">Detail</span> </div></div>
+        </div>
+    </div><!-- .container -->
+    
+    <div class="container">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success text-center" style="font-size:x-large" role="alert">
+                <strong>Success!</strong> @TempData["SuccessMessage"]
+            </div>
+        }
+        @if (TempData["FailMessage"] != null)
+        {
+            <div class="alert alert-danger text-center" style="font-size:x-large" role="alert">
+                <strong>Oop!</strong> @TempData["FailMessage"]
+            </div>
+        }
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div id="main-content" class="main-content">
+                    <div id="primary" class="content-area">
+                        <div id="content" class="site-content" role="main">
+                            <article id="post-17" class="post-17 page type-page status-publish hentry">
+                                <div class="entry-content clearfix">
+                                    <!-- Order Information -->
+                                    <div class="container mt-5">
+                                        <h2>Order Infor</h2>
+                                        <table class="table no-border-table w-100">
+                                            <colgroup>
+                                                <col style="width: 15%;">
+                                                <col style="width: 20%;">
+                                                <col style="width: 15%;">
+                                                <col style="width: 50%;">
+                                            </colgroup>
+                                            <tr>
+                                                <td><strong>Payment Method: </strong></td>
+                                                <td>@Model.Order.PaymentMethod</td>
+
+                                                <td><strong>Order Time:</strong></td>
+                                                <td>@Model.Order.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>Payment Status: </strong></td>
+                                                @{
+                                                    string paymentStatusNm = @Model.Order.PaymentStatus == "Y" ? "Paid Done" : "Not Paid Yet";
+                                                }
+                                                <td>@paymentStatusNm</td>
+
+                                                <td><strong>Delivery Time: </strong></td>
+                                                @if (Model.Order.DeliveryDate != null)
+                                                {
+                                                    <td>@Model.Order.DeliveryDate?.ToString("yyyy-MM-dd HH:mm")</td>
+                                                }
+                                                else
+                                                {
+                                                    <td>Processing</td>
+                                                }
+                                            </tr>
+
+                                            <tr>
+                                                <td><strong>Order Status: </strong></td>
+                                                @{
+                                                    string statusNm = "";
+                                                    if (@Model.Order.Status == "OC")
+                                                    {
+                                                        statusNm = "Order Created";
+                                                    }
+                                                    else if (@Model.Order.Status == "OB")
+                                                    {
+                                                        statusNm = "Order Booked";
+                                                    }
+                                                    else if (@Model.Order.Status == "OT")
+                                                    {
+                                                        statusNm = "Transporting";
+                                                    }
+                                                    else if (@Model.Order.Status == "OS")
+                                                    {
+                                                        statusNm = "Order Success";
+                                                    }
+                                                    else if (@Model.Order.Status == "CO")
+                                                    {
+                                                        statusNm = "Order Cancelled";
+                                                    }
+                                                }
+                                                <td>@statusNm</td>
+                                                @if (Model.Order.Status == "OC" && Model.Order.PaymentStatus != "Y")
+                                                {
+                                                    <td><strong>Action: </strong></td>
+                                                    <td><button class="btn btn-danger open-btn" onclick="opencredit_modal()">Pay by Card</button></td>
+                                                }
+                                                else
+                                                {
+                                                    <td><strong></strong></td>
+                                                    <td></td>
+                                                }
+                                                
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <!-- Recipient Information -->
+                                    <div class="container mt-5">
+                                        <h2>Recipient Infor</h2>
+                                        @if (Model.Order.Status == "OC" && Model.Order.PaymentStatus == "Y")
+                                        {
+                                            <!-- Form Input for recipient -->
+                                            <div>
+                                                <form asp-action="BookOrder" method="post" enctype="multipart/form-data">
+                                                    <input type="hidden" asp-for="RecipientModel.OrderId" value="@Model.Order.Id" />
+                                                    <div class="card-body">
+                                                        <div class="form-group">
+                                                            <label for="RecipientName">Receiver's Name</label>
+                                                            <input type="text" asp-for="RecipientModel.RecipientName" class="form-control" required>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="RecipientAddress">Receiver's Address</label>
+                                                            <input type="text" asp-for="RecipientModel.RecipientAddress" class="form-control" required>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="RecipientPhone">Phone Number</label>
+                                                            <input type="tel"
+                                                                   oninput="this.value = this.value.replace(/(?!^\+)[^\d]/g, '')" placeholder="+84332732863" asp-for="RecipientModel.RecipientPhone" class="form-control" required>
+                                                        </div>
+                                                        <label for="RecipientMessage">Message</label>
+                                                        <div class="form-row">
+                                                            <div class="form-group col" style="width:30%">
+                                                                <select id="occasionId">
+                                                                    <option value="">-- Select Occasion --</option>
+                                                                    @foreach (var occ in Model.Occasions)
+                                                                    {
+                                                                        <option value="@occ.Id">@occ.Name</option>
+                                                                    }
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="form-group col" style="width:70%">
+                                                                <select id="messageId">
+                                                                    <option value="">-- Select Hint Message --</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <textarea asp-for="RecipientModel.RecipientMessage" class="form-control" rows="4" required > </textarea>
+                                                        </div>
+                                                    </div>   
+                                                        
+                                                    <div class="card-footer">
+                                                        <button type="submit" class="btn btn-primary">Book Order</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <!-- Recipient Infor -->
+                                            <table class="table no-border-table w-100">
+                                                <colgroup>
+                                                    <col style="width: 15%;">
+                                                    <col style="width: 85%;">
+                                                </colgroup>
+                                                <tr>
+                                                    <td><strong>Receiver's Name: </strong></td>
+                                                    <td>@Model.Recipient.Name</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><strong>Receiver's Address: </strong></td>
+                                                    <td>@Model.Recipient.Address</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><strong>Phone Number: </strong></td>
+                                                    <td>@Model.Recipient.Phone</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td><strong>Message Attached: </strong></td>
+                                                    <td>@Model.Recipient.Message</td>
+                                                </tr>
+                                            </table>
+                                        }
+                                    </div>
+                                    <!-- Order Items List -->
+                                    <div class="container mt-5 mb-5">
+
+                                        <h2>Order Items</h2>
+
+                                        <table class="table table-bordered">
+
+                                            <thead>
+                                                <tr class="text-center">
+                                                    <th><strong>No</strong></th>
+                                                    <th><strong>Image</strong></th>
+                                                    <th><strong>Name</strong></th>
+                                                    <th><strong>Description</strong></th>
+                                                    <th><strong>Price</strong></th>
+                                                    <th><strong>Quantity</strong></th>
+                                                    <th><strong>Total</strong></th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+
+                                                @{
+                                                    int no = 1;
+                                                }
+
+                                                @foreach (var item in Model.OrderItems)
+                                                {
+                                                    <tr>
+
+                                                        <td class="text-center">@no</td>
+
+                                                        <td class="text-center">
+                                                        @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                                        {
+                                                            var firstImage = item.ImageUrl.Split(',')[0];
+                                                                <img src="@firstImage" class="mx-auto d-block" alt="main image" width="100" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <span>No Image</span>
+                                                        }
+                                                        </td>
+
+                                                        <td>@item.BouquetName</td>
+
+                                                        <td>@item.Description</td>
+
+                                                        <td class="text-right"> @item.Price.ToString("N0") </td>
+
+                                                        <td class="text-right">@item.Quantity</td>
+
+                                                        <td class="text-right">@item.TotalPrice.ToString("N0")</td>
+                                                    </tr>
+                                                    no++;
+                                                }
+                                                <tr><td colspan="7" class="text-right"><strong>Total Price:    </strong>@Model.Order.TotalAmount</td></tr>
+                                            </tbody>
+
+                                        </table>
+                                        <div class="card-footer mt-5">
+                                            <a asp-action="Index" class="btn btn-secondary">Back to order list</a>
+                                        </div>
+
+                                    </div>
+                                    
+                                </div><!-- .entry-content -->
+                            </article><!-- #post-## -->
+                        </div><!-- #content -->
+                    </div><!-- #primary -->
+                </div><!-- #main-content -->
+            </div>
+        </div>
+    </div>
+</div><!-- #main -->
+
+<!-- Credit Modal  -->
+<div class="credit-modal" id="credit-modal">
+
+    <div class="credit-modal-content">
+
+        <div class="close-btn" onclick="closecredit_modal()">
+            &times;
+        </div>
+
+        <div class="credit-container">
+
+            <div class="card-container">
+
+                <div class="front">
+                    <div class="image">
+                        <!-- <img src="https://i.imgur.com/2ISgYja.png" alt="">
+                        <img src="https://i.imgur.com/iFW3F8x.png" alt=""> -->
+                        <p>Credit Card Payment</p>
+                    </div>
+
+                    <div class="card-number-box">
+                        ################
+                    </div>
+
+                    <div class="flexbox">
+                        <div class="box">
+                            <span>card holder</span>
+                            <div class="card-holder-name">full name</div>
+                        </div>
+
+                        <div class="box">
+                            <span>expires</span>
+
+                            <div class="expiration">
+                                <span class="exp-month">mm</span>
+                                /
+                                <span class="exp-year">yy</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="back">
+
+                    <div class="stripe"></div>
+
+                    <div class="box">
+                        <span>cvv</span>
+
+                        <div class="cvv-box"></div>
+
+                        <!-- <img src="https://i.imgur.com/iFW3F8x.png" alt=""> -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form -->
+            <form asp-action="Payment" method="post">
+                <input type="hidden" name="orderId" value="@Model.Order.Id" />
+                <div class="inputBox">
+                    <span>card number</span>
+
+                    <input type="text" maxlength="16" class="card-number-input" required>
+                </div>
+
+                <div class="inputBox">
+                    <span>card holder</span>
+
+                    <input type="text" class="card-holder-input required">
+                </div>
+
+                <div class="flexbox">
+
+                    <div class="inputBox">
+                        <span>expiration mm</span>
+
+                        <select class="month-input" required>
+                            <option value="" selected disabled>month</option>
+                            <option value="01">01</option>
+                            <option value="02">02</option>
+                            <option value="03">03</option>
+                            <option value="04">04</option>
+                            <option value="05">05</option>
+                            <option value="06">06</option>
+                            <option value="07">07</option>
+                            <option value="08">08</option>
+                            <option value="09">09</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                        </select>
+                    </div>
+
+                    <div class="inputBox">
+                        <span>expiration yy</span>
+
+                        <select class="year-input" required>
+                            <option value = "" selected disabled>year</option>
+                            <option value="2026">2026</option>
+                            <option value="2027">2027</option>
+                            <option value="2028">2028</option>
+                            <option value="2029">2029</option>
+                            <option value="2030">2030</option>
+                        </select>
+                    </div>
+
+                    <div class="inputBox">
+                        <span>cvv</span>
+
+                        <input type="text" maxlength="4" class="cvv-input" required>
+                    </div>
+                </div>
+
+                <input type="submit" value="submit" class="submit-btn">
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    const credit_modal = document.getElementById('credit-modal');
+
+    function opencredit_modal() {
+        credit_modal.style.display = 'flex';
+    }
+
+    function closecredit_modal() {
+        credit_modal.style.display = 'none';
+    }
+
+    // close outside credit_modal
+    window.onclick = function (e) {
+        if (e.target === credit_modal) {
+            closecredit_modal();
+        }
+    }
+
+    // Card Live Update
+    document.querySelector('.card-number-input').oninput = () => {
+        document.querySelector('.card-number-box').innerText =
+            document.querySelector('.card-number-input').value;
+    }
+
+    document.querySelector('.card-holder-input').oninput = () => {
+        document.querySelector('.card-holder-name').innerText =
+            document.querySelector('.card-holder-input').value;
+    }
+
+    document.querySelector('.month-input').oninput = () => {
+        document.querySelector('.exp-month').innerText =
+            document.querySelector('.month-input').value;
+    }
+
+    document.querySelector('.year-input').oninput = () => {
+        document.querySelector('.exp-year').innerText =
+            document.querySelector('.year-input').value;
+    }
+
+    document.querySelector('.cvv-input').onmouseenter = () => {
+        document.querySelector('.front').style.transform =
+            'perspective(1000px) rotateY(-180deg)';
+
+        document.querySelector('.back').style.transform =
+            'perspective(1000px) rotateY(0deg)';
+    }
+
+    document.querySelector('.cvv-input').onmouseleave = () => {
+        document.querySelector('.front').style.transform =
+            'perspective(1000px) rotateY(0deg)';
+
+        document.querySelector('.back').style.transform =
+            'perspective(1000px) rotateY(180deg)';
+    }
+
+    document.querySelector('.cvv-input').oninput = () => {
+        document.querySelector('.cvv-box').innerText =
+            document.querySelector('.cvv-input').value;
+    }
+
+
+
+     @* <!-- Filter Message List --> *@
+    const allMessages = @Html.Raw(Json.Serialize(Model.Messages));
+
+    const occasionDropdown = document.getElementById("occasionId");
+
+    const messageDropdown = document.getElementById("messageId");
+
+    occasionDropdown.addEventListener("change", function () {
+        var occasionId =  this.value;
+
+        messageDropdown.innerHTML = '<option value="">-- Select Hint Message --</option>';
+
+        @* // FILTER Messages *@
+        var filteredMsgs = allMessages.filter(function (msg) {
+            return msg.occasionId == occasionId;
+        });
+
+        @* // ADD Messages *@
+        filteredMsgs.forEach(function (msg) {
+
+            var option = document.createElement("option");
+
+            option.value = msg.content;
+            option.text = msg.content;
+
+            messageDropdown.appendChild(option);
+
+        });
+
+    });
+
+    messageDropdown.addEventListener("change", function () {
+        var mesgInput = document.getElementById('RecipientModel_RecipientMessage')
+        mesgInput.value = this.value
+    });
+
+</script>

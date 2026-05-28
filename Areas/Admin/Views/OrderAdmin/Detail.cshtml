@@ -1,0 +1,189 @@
+﻿@model Shopv2.Models.ViewModels.OrderDetailViewModel
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Order Detail Check";
+}
+
+<section class="content pt-4">
+    <div class="container-fluid">
+        <div class="card card-warning">
+            <div class="card-header">
+                <h3 class="card-title">Order Detail Information</h3>
+            </div>
+            <div class="card-body container-fluid">
+                <!-- Order Information -->
+                <div class="container-fluid mt-5">
+                    <h3>Order Infor</h3>
+                    <table class="table no-border-table w-100">
+                        <colgroup>
+                            <col style="width: 15%;">
+                            <col style="width: 20%;">
+                            <col style="width: 15%;">
+                            <col style="width: 50%;">
+                        </colgroup>
+                        <tr>
+                            <td><strong>Payment Method: </strong></td>
+                            <td>@Model.Order.PaymentMethod</td>
+
+                            <td><strong>Order Time:</strong></td>
+                            <td>@Model.Order.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>Payment Status: </strong></td>
+                            @{
+                                string paymentStatusNm = @Model.Order.PaymentStatus == "Y" ? "Paid Done" : "Not Paid Yet";
+                            }
+                            <td>@paymentStatusNm</td>
+
+                            <td><strong>Delivery Time: </strong></td>
+                            @if (Model.Order.DeliveryDate != null)
+                            {
+                                <td>@Model.Order.DeliveryDate?.ToString("yyyy-MM-dd HH:mm")</td>
+                            }
+                            else
+                            {
+                                <td>Processing</td>
+                            }
+                        </tr>
+
+                        <tr>
+                            <td><strong>Order Status: </strong></td>
+                            @{
+                                string statusNm = "";
+                                if (@Model.Order.Status == "OC")
+                                {
+                                    statusNm = "Order Created";
+                                }
+                                else if (@Model.Order.Status == "OB")
+                                {
+                                    statusNm = "Order Booked";
+                                }
+                                else if (@Model.Order.Status == "OT")
+                                {
+                                    statusNm = "Transporting";
+                                }
+                                else if (@Model.Order.Status == "OS")
+                                {
+                                    statusNm = "Order Success";
+                                }
+                                else if (@Model.Order.Status == "CO")
+                                {
+                                    statusNm = "Order Cancelled";
+                                }
+                            }
+                            <td>@statusNm</td>
+                            <td><strong>Payment: </strong></td>
+                            <td>@Model.Order.TotalAmount</td>
+                                                
+                                                
+                        </tr>
+                    </table>
+                </div>
+                <!-- Recipient Information -->
+                <div class="container-fluid mt-5">
+                    <h3>Recipient Infor</h3>
+                        <!-- Recipient Infor -->
+                        <table class="table no-border-table w-100">
+                            <colgroup>
+                                <col style="width: 15%;">
+                                <col style="width: 85%;">
+                            </colgroup>
+                            <tr>
+                                <td><strong>Receiver's Name: </strong></td>
+                                <td>@Model.Recipient.Name</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Receiver's Address: </strong></td>
+                                <td>@Model.Recipient.Address</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Phone Number: </strong></td>
+                                <td>@Model.Recipient.Phone</td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Message Attached: </strong></td>
+                                <td>@Model.Recipient.Message</td>
+                            </tr>
+                        </table>
+                                        
+                </div>
+                <!-- Order Items List -->
+                <div class="container-fluid mt-5 mb-5">
+
+                    <h3>Order Items</h3>
+
+                    <table class="table table-bordered">
+
+                        <thead>
+                            <tr>
+                                <th><strong>No</strong></th>
+                                <th><strong>Image</strong></th>
+                                <th><strong>Name</strong></th>
+                                <th><strong>Description</strong></th>
+                                <th><strong>Price</strong></th>
+                                <th><strong>Quantity</strong></th>
+                                <th><strong>Total</strong></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @{
+                                int no = 1;
+                            }
+
+                            @foreach (var item in Model.OrderItems)
+                            {
+                                <tr>
+
+                                    <td>@no</td>
+
+                                    <td>
+                                    @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                    {
+                                        var firstImage = item.ImageUrl.Split(',')[0];
+                                        <img src="@firstImage" alt="main image" width="100" />
+                                    }
+                                    else
+                                    {
+                                        <span>No Image</span>
+                                    }
+                                    </td>
+
+                                    <td>@item.BouquetName</td>
+
+                                    <td>@item.Description</td>
+
+                                    <td> @item.Price.ToString("N0") </td>
+
+                                    <td>
+                                        <div class="cart-quantity">
+
+                                            <span class="qty-number">
+                                                @item.Quantity
+                                            </span>
+
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        @item.TotalPrice.ToString("N0")
+                                    </td>
+                                </tr>
+                                no++;
+                            }
+                        </tbody>
+
+                    </table>
+
+                </div>
+            </div>
+            <div class="card-footer">
+                <a asp-action="Index" class="btn btn-default">Back to list</a>
+            </div>
+        </div>
+</section>
