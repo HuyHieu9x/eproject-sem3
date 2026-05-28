@@ -1,0 +1,151 @@
+﻿@model List<Shopv2.Models.Order>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Order List";
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        <strong>Success!</strong> @TempData["SuccessMessage"]
+    </div>
+}
+@if (TempData["FailMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        <strong>Oop!</strong> @TempData["FailMessage"]
+    </div>
+}
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Order Management / Order</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <colgroup>
+                        <col style="width: 4%;">
+                        <col style="width: 10%;">
+                        <col style="width: 10%;">
+                        <col style="width: 10%;">
+                        <col style="width: 12%;">
+                        <col style="width: 12%;">
+                        <col style="width: 10%;">
+                        <col style="width: 32%;">
+                    </colgroup>
+                    <thead>
+                        <tr class="text-center">
+                            <th><strong>No</strong></th>
+                            <th><strong>Payment Method</strong></th>
+                            <th><strong>Payment Status</strong></th>
+                            <th><strong>Order Status</strong></th>
+                            <th><strong>Order Time</strong></th>
+                            <th><strong>Delivery Time</strong></th>
+                            <th><strong>Total Price</strong></th>
+                            <th><strong>Action</strong></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @{
+                            int no = 1;
+                        }
+
+                        @foreach (var order in Model)
+                        {
+                            <tr class="text-center">
+
+                                <td>@no</td>
+
+                                <td>@order.PaymentMethod</td>
+                                @{
+                                    string paymentStatusNm = order.PaymentStatus == "Y" ? "Paid Done" : "Not Paid Yet";
+                                }
+                                <td class="text-left">@paymentStatusNm</td>
+                                @{
+                                    string statusNm = "";
+                                    if (order.Status == "OC")
+                                    {
+                                        statusNm = "Order Created";
+                                    } else if(order.Status == "OB")
+                                    {
+                                        statusNm = "Order Booked";
+                                    }
+                                    else if (order.Status == "OT")
+                                    {
+                                        statusNm = "Transporting";
+                                    }
+                                    else if (order.Status == "OS")
+                                    {
+                                        statusNm = "Order Success";
+                                    }
+                                    else if (order.Status == "CO")
+                                    {
+                                        statusNm = "Order Cancelled";
+                                    }
+                                }
+                                <td class="text-left">@statusNm</td>
+
+                                <td class="text-left">@order.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                <td class="text-left">@order.DeliveryDate?.ToString("yyyy-MM-dd HH:mm")</td>
+
+                                <td class="text-right">@order.TotalAmount.ToString("N0")</td>
+
+                                <td>
+                                    <div class="row justify-content-center">
+                                        <div class="col-auto">
+                                        @if(order.Status == "OB")
+                                        {
+                                            <form asp-action="Transport" class="form-inline" method="post">
+                                                <input type="hidden" name="orderId" value="@order.Id" />
+                                                <button class="btn btn-success btn-sm" type="submit">Transport Handover</button>
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <a class="btn btn-secondary btn-sm disabled"> Transport Handover </a>
+                                        }
+                                        </div>
+                                        <div class="col-auto">
+                                            <a asp-action="Detail" asp-route-id="@order.Id" class="btn btn-warning btn-sm"> Detail</a>
+                                        </div>
+                                        <div class="col-auto">
+                                        @if (order.Status == "OC" || order.Status == "OB")
+                                        {
+                                                <form asp-action="Cancel" class="form-inline" method="post">
+                                                <input type="hidden" name="orderId" value="@order.Id" />
+                                                    <button class="btn btn-danger btn-sm" type="submit">Cancel</button>
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <a  class="btn btn-secondary btn-sm disabled"> Cancel </a>
+                                        }
+                                        </div>
+                                    </div>
+                                </td>
+
+                            </tr>
+
+                            no++;
+                        }
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
