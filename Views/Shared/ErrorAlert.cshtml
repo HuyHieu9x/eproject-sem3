@@ -1,0 +1,110 @@
+﻿@model Shopv2.Models.ViewModels.ErrorAlertViewModel
+@{
+    Layout = null;
+    ViewData["Title"] = "Error";
+}
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+
+    body {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #f2f4f8;
+    }
+
+    /* Popup Overlay */
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Popup Box */
+    .popup {
+        width: 400px;
+        background: #fff;
+        border-radius: 12px;
+        padding: 25px;
+        text-align: center;
+        animation: popup 0.3s ease;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    @@keyframes popup {
+        from
+
+    {
+        transform: scale(0.7);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    }
+
+    /* Error Icon */
+    .icon {
+        width: 70px;
+        height: 70px;
+        background: #ffe5e5;
+        color: #e63946;
+        font-size: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        margin: 0 auto 15px;
+    }
+
+    .popup h2 {
+        color: #e63946;
+        margin-bottom: 10px;
+    }
+
+    .popup p {
+        color: #555;
+        font-size: 14px;
+        margin-bottom: 20px;
+        line-height: 1.5;
+    }
+
+    .close-btn {
+        padding: 10px 20px;
+        border: none;
+        background: #e63946;
+        color: #fff;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .close-btn:hover {
+        background: #c1121f;
+    }
+</style>
+
+<div class="overlay" id="overlay">
+    <div class="popup">
+        <div class="icon">✖</div>
+        <h2>Error</h2>
+        <p>@Model.message</p>
+        <a class="close-btn" href="javascript:history.go(-1)" style="text-decoration:none">OK</a>
+    </div>
+</div>

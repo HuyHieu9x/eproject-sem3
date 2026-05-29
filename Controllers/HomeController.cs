@@ -243,5 +243,25 @@ namespace Shopv2.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Success(SuccessViewModel successViewModel)
+        {
+            if(successViewModel == null)
+            {
+                successViewModel = new SuccessViewModel();
+            }
+            return View(successViewModel);
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult ErrorAlert(ErrorAlertViewModel errorViewModel)
+        {
+            if (errorViewModel == null)
+            {
+                errorViewModel = new ErrorAlertViewModel();
+            }
+            return View(errorViewModel);
+        }
     }
 }
