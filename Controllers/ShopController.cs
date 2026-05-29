@@ -17,37 +17,29 @@ namespace Shopv2.Controllers
             _context = context;
         }
 
-        public IActionResult Index(int? occasionId, int page = 1, int pageSize = 2)
+        public IActionResult Index(int? occasionId, int page = 1, int pageSize = 10)
         {
-            // Đảm bảo số trang tối thiểu là 1
             page = Math.Max(1, page);
             pageSize = Math.Max(1, pageSize);
 
-            // 1. Khởi tạo truy vấn Bouquet hoạt động
             var bouquetsQuery = _context.Bouquets.Where(b => b.IsActive);
 
-            // FIX BUG: Thêm logic lọc theo Occasion nếu có truyền vào
             if (occasionId.HasValue)
             {
-                // Giả sử bảng Bouquet của bạn có trường OccasionId để liên kết
                 bouquetsQuery = bouquetsQuery.Where(b => b.OccasionId == occasionId.Value);
             }
 
-            // 2. Tính toán phân trang
             var totalBouquets = bouquetsQuery.Count();
             var totalPages = (int)Math.Ceiling(totalBouquets / (double)pageSize);
 
-            // 3. Lấy danh sách sản phẩm theo trang
             var bouquets = bouquetsQuery
                 .OrderByDescending(b => b.CreatedAt)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();
 
-            // 4. Lấy danh sách danh mục (Occasions) cho Sidebar
             var occasions = _context.Occasions.OrderBy(o => o.Name).ToList();
 
-            // 5. Đóng gói vào ViewModel
             var viewModel = new ShopIndexViewModel
             {
                 Bouquets = bouquets,
@@ -59,6 +51,42 @@ namespace Shopv2.Controllers
             };
 
             return View(viewModel);
+        }
+
+        public IActionResult Detail(int id)
+        {
+            // 1. Lấy sản phẩm dựa theo Id
+            var bouquet = _context.Bouquets.FirstOrDefault(b => b.Id == id);
+            if (bouquet == null) return NotFound();
+
+            // 2. Lấy tên dịp lễ theo đúng logic của bạn
+            var occasion = _context.Occasions.FirstOrDefault(o => o.Id == bouquet.OccasionId);
+            ViewBag.OccasionName = occasion?.Name;
+
+            // 3. XỬ LÝ CHUỖI IMAGEURL CHỨA NHIỀU ẢNH
+            var allImages = new List<string>();
+            string mainImage = "/images/default-bouquet.jpg"; // Ảnh sơ cua nếu sản phẩm không có ảnh
+
+            if (!string.IsNullOrEmpty(bouquet.ImageUrl))
+            {
+                // Tách chuỗi ImageUrl dựa trên dấu phẩy thành List các đường dẫn ảnh thật
+                allImages = bouquet.ImageUrl
+                                   .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                   .Select(img => img.Trim())
+                                   .ToList();
+
+                // Lấy tấm ảnh đầu tiên trong chuỗi để làm ảnh hiển thị lớn mặc định ban đầu
+                if (allImages.Any())
+                {
+                    mainImage = allImages.First();
+                }
+            }
+
+            // Truyền dữ liệu sang View qua ViewBag
+            ViewBag.MainImage = mainImage; // Đường dẫn 1 ảnh lớn
+            ViewBag.AllImages = allImages; // Danh sách tất cả các ảnh để làm thumbnails
+
+            return View(bouquet);
         }
     }
 }
