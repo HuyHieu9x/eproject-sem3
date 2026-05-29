@@ -10,19 +10,33 @@
             <div class="card-header">
                 <h3 class="card-title">Create Message</h3>
             </div>
-            <form asp-action="Create" method="post">
+
+            <form asp-action="Create" method="post" id="messageForm" novalidate>
                 <div class="card-body">
+
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger alert-dismissible fade show" role="alert" style="display:none;" id="validationSummaryAlert">
+                        <i class="icon fas fa-exclamation-triangle"></i>
+                        Please fill in all required fields before saving.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
                     <div class="form-group">
                         <label for="OccasionId">Select Target Occasion</label>
-                        <select asp-for="OccasionId" class="form-control" asp-items="ViewBag.OccasionId">
+                        <select asp-for="OccasionId" class="form-control" asp-items="ViewBag.OccasionId" required>
                             <option value="">-- Select an occasion --</option>
                         </select>
+                        <span asp-validation-for="OccasionId" class="text-danger text-sm"></span>
                     </div>
+
                     <div class="form-group">
                         <label for="Content">Message Content</label>
                         <textarea asp-for="Content" class="form-control" rows="4" placeholder="Enter meaningful message content here..." required></textarea>
+                        <span asp-validation-for="Content" class="text-danger text-sm"></span>
                     </div>
                 </div>
+
                 <div class="card-footer">
                     <button type="submit" class="btn btn-primary">Save</button>
                     <a asp-action="Index" class="btn btn-default">Back to List</a>
@@ -31,3 +45,50 @@
         </div>
     </div>
 </section>
+
+@section Scripts {
+    <script src="~/admin/plugins/jquery-validation/jquery.validate.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var form = $('#messageForm');
+
+            form.on('submit', function (e) {
+                var formElement = form[0];
+
+                // If any field is invalid
+                if (!formElement.checkValidity()) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    $('#validationSummaryAlert').fadeIn();
+
+                    // Loop through all inputs/selects/textareas to check their specific status
+                    form.find('.form-control').each(function () {
+                        if (!this.checkValidity()) {
+                            $(this).addClass('is-invalid');  // Adds the red border instantly
+                        } else {
+                            $(this).removeClass('is-invalid');
+                        }
+                    });
+                }
+
+                form.addClass('was-validated');
+            });
+
+            // Dynamic tracking: Remove the red border as soon as the user starts typing or fixes the field
+            form.find('.form-control').on('input change', function () {
+                if (this.checkValidity()) {
+                    $(this).removeClass('is-invalid');
+                } else {
+                    $(this).addClass('is-invalid');
+                }
+
+                // If the entire form is valid now, hide the top global alert banner
+                if (form[0].checkValidity()) {
+                    $('#validationSummaryAlert').fadeOut();
+                }
+            });
+        });
+    </script>
+}
