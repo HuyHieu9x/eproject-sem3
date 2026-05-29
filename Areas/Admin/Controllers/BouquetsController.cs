@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Shopv2.Data;
 using Shopv2.Models;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -23,16 +26,40 @@ namespace Shopv2.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        // 1. READ - Danh sách sản phẩm hoa
+        // 1. READ - Bouquets List (With Search, Pagination & Alerts)
         [HttpGet("")]
-        public IActionResult Index()
+        public IActionResult Index(string searchString, int page = 1)
         {
-            var bouquets = _context.Bouquets.ToList();
+            int pageSize = 10; // Maximum items per view sequence
+            var query = _context.Bouquets.AsQueryable();
+
+            // Search Strategy: Filter by Bouquet Name
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                query = query.Where(b => b.Name.Contains(searchString));
+                ViewBag.CurrentFilter = searchString;
+            }
+
+            // Pagination Math Matrix
+            int totalItems = query.Count();
+            int totalPages = (int)System.Math.Ceiling((double)totalItems / pageSize);
+
+            if (page < 1) page = 1;
+            if (page > totalPages && totalPages > 0) page = totalPages;
+
+            var bouquets = query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = totalPages;
             ViewBag.Occasions = _context.Occasions.ToDictionary(o => o.Id, o => o.Name);
+
             return View(bouquets);
         }
 
-        // 2. CREATE - Giao diện thêm
+        // 2. CREATE - Add View Layout
         [HttpGet("create")]
         public IActionResult Create()
         {
@@ -41,46 +68,67 @@ namespace Shopv2.Controllers
         }
 
         [HttpPost("create")]
-        public IActionResult Create(Bouquet bouquet, List<IFormFile>? ImageFiles) // Đổi thành List<IFormFile>
+        public IActionResult Create(Bouquet bouquet, List<IFormFile>? ImageFiles)
         {
-            bouquet.CreatedAt = DateTime.Now;
-
-            // Kiểm tra xem danh sách file đẩy lên có phần tử nào không
-            if (ImageFiles != null && ImageFiles.Count > 0)
+            try
             {
-                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
-                if (!Directory.Exists(uploadsFolder)) Directory.CreateDirectory(uploadsFolder);
+                bouquet.CreatedAt = DateTime.Now;
 
-                // Tạo một list để chứa các đường dẫn ảnh mới tạo ra
-                var imagePaths = new List<string>();
-
-                foreach (var file in ImageFiles)
+                if (ImageFiles != null && ImageFiles.Count > 0)
                 {
-                    if (file.Length > 0)
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+                    if (!Directory.Exists(uploadsFolder)) Directory.CreateDirectory(uploadsFolder);
+
+                    var imagePaths = new List<string>();
+                    foreach (var file in ImageFiles)
                     {
-                        string uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
-                        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        if (file.Length > 0)
                         {
-                            file.CopyTo(fileStream);
-                        }
+                            // 1. Lấy phần mở rộng của file (ví dụ: .jpg, .png)
+                            string extension = Path.GetExtension(file.FileName);
 
-                        imagePaths.Add("/images/" + uniqueFileName);
+                            // 2. Lấy tên file gốc không chứa đuôi mở rộng
+                            string originalFileName = Path.GetFileNameWithoutExtension(file.FileName);
+
+                            // 3. Tạo chuỗi thời gian hiện tại chính xác đến từng phần nghìn giây
+                            string timestamp = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+
+                            // 4. Kết hợp lại thành tên file mới: TênGốc_ChuỗiThờiGian.đuôi
+                            string uniqueFileName = $"{originalFileName}_{timestamp}{extension}";
+
+                            string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                            using (var fileStream = new FileStream(filePath, FileMode.Create))
+                            {
+                                file.CopyTo(fileStream);
+                            }
+                            imagePaths.Add("/images/" + uniqueFileName);
+
+                            // Thêm một khoảng trễ cực nhỏ (1 milisecond) để tránh trường hợp 
+                            // các file trong cùng một vòng lặp bị trùng khít phần nghìn giây
+                            System.Threading.Thread.Sleep(1);
+                        }
                     }
+                    bouquet.ImageUrl = string.Join(",", imagePaths);
                 }
 
-                // Gộp các đường dẫn lại thành 1 chuỗi, ngăn cách bằng dấu phẩy ',' để lưu vào DB
-                // Ví dụ kết quả: "/images/img1.jpg,/images/img2.jpg"
-                bouquet.ImageUrl = string.Join(",", imagePaths);
-            }
+                _context.Bouquets.Add(bouquet);
+                _context.SaveChanges();
 
-            _context.Bouquets.Add(bouquet);
-            _context.SaveChanges();
-            return RedirectToAction(nameof(Index));
+                TempData["AlertMessage"] = "Bouquet created successfully!";
+                TempData["AlertType"] = "success";
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception)
+            {
+                TempData["AlertMessage"] = "Failed to create bouquet due to a database processing error.";
+                TempData["AlertType"] = "danger";
+                ViewBag.OccasionId = new SelectList(_context.Occasions, "Id", "Name", bouquet.OccasionId);
+                return View(bouquet);
+            }
         }
 
-        // 3. UPDATE - Giao diện sửa
+        // 3. UPDATE - Edit View Layout
         [HttpGet("edit/{id}")]
         public IActionResult Edit(int id)
         {
@@ -92,77 +140,112 @@ namespace Shopv2.Controllers
         }
 
         [HttpPost("edit/{id}")]
-        public IActionResult Edit(Bouquet bouquet, List<IFormFile>? ImageFiles) // Đổi thành List<IFormFile>
+        public IActionResult Edit(Bouquet bouquet, List<IFormFile>? ImageFiles)
         {
-            var existingBouquet = _context.Bouquets.FirstOrDefault(b => b.Id == bouquet.Id);
-            if (existingBouquet == null) return NotFound();
-
-            existingBouquet.Name = bouquet.Name;
-            existingBouquet.Description = bouquet.Description;
-            existingBouquet.Price = bouquet.Price;
-            existingBouquet.OccasionId = bouquet.OccasionId;
-            existingBouquet.IsActive = bouquet.IsActive;
-
-            // Nếu người dùng chọn tải lên danh sách ảnh mới để thay thế
-            if (ImageFiles != null && ImageFiles.Count > 0)
+            try
             {
-                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
-                if (!Directory.Exists(uploadsFolder)) Directory.CreateDirectory(uploadsFolder);
+                var existingBouquet = _context.Bouquets.FirstOrDefault(b => b.Id == bouquet.Id);
+                if (existingBouquet == null) return NotFound();
 
-                // 1. XÓA TẤT CẢ ẢNH CŨ trên server để tránh rác bộ nhớ
-                if (!string.IsNullOrEmpty(existingBouquet.ImageUrl))
+                existingBouquet.Name = bouquet.Name;
+                existingBouquet.Description = bouquet.Description;
+                existingBouquet.Price = bouquet.Price;
+                existingBouquet.OccasionId = bouquet.OccasionId;
+                existingBouquet.IsActive = bouquet.IsActive;
+
+                if (ImageFiles != null && ImageFiles.Count > 0)
                 {
-                    // Tách chuỗi ngược lại thành danh sách các file ảnh cũ
-                    var oldPaths = existingBouquet.ImageUrl.Split(',');
-                    foreach (var oldPath in oldPaths)
-                    {
-                        string fullOldPath = Path.Combine(_webHostEnvironment.WebRootPath, oldPath.TrimStart('/'));
-                        if (System.IO.File.Exists(fullOldPath)) System.IO.File.Delete(fullOldPath);
-                    }
-                }
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+                    if (!Directory.Exists(uploadsFolder)) Directory.CreateDirectory(uploadsFolder);
 
-                // 2. LƯU LOẠT ẢNH MỚI
-                var newImagePaths = new List<string>();
-                foreach (var file in ImageFiles)
-                {
-                    if (file.Length > 0)
+                    // Xóa toàn bộ ảnh cũ trên server
+                    if (!string.IsNullOrEmpty(existingBouquet.ImageUrl))
                     {
-                        string uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
-                        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        var oldPaths = existingBouquet.ImageUrl.Split(',');
+                        foreach (var oldPath in oldPaths)
                         {
-                            file.CopyTo(fileStream);
+                            string fullOldPath = Path.Combine(_webHostEnvironment.WebRootPath, oldPath.TrimStart('/'));
+                            if (System.IO.File.Exists(fullOldPath)) System.IO.File.Delete(fullOldPath);
                         }
-
-                        newImagePaths.Add("/images/" + uniqueFileName);
                     }
+
+                    var newImagePaths = new List<string>();
+                    foreach (var file in ImageFiles)
+                    {
+                        if (file.Length > 0)
+                        {
+                            // Áp dụng cấu trúc đặt tên theo thời gian tương tự khi Create
+                            string extension = Path.GetExtension(file.FileName);
+                            string originalFileName = Path.GetFileNameWithoutExtension(file.FileName);
+                            string timestamp = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+
+                            string uniqueFileName = $"{originalFileName}_{timestamp}{extension}";
+                            string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                            using (var fileStream = new FileStream(filePath, FileMode.Create))
+                            {
+                                file.CopyTo(fileStream);
+                            }
+                            newImagePaths.Add("/images/" + uniqueFileName);
+
+                            System.Threading.Thread.Sleep(1);
+                        }
+                    }
+                    existingBouquet.ImageUrl = string.Join(",", newImagePaths);
                 }
 
-                // Cập nhật lại chuỗi ảnh mới vào database
-                existingBouquet.ImageUrl = string.Join(",", newImagePaths);
-            }
+                _context.Bouquets.Update(existingBouquet);
+                _context.SaveChanges();
 
-            _context.Bouquets.Update(existingBouquet);
-            _context.SaveChanges();
-            return RedirectToAction(nameof(Index));
+                TempData["AlertMessage"] = "Bouquet details updated successfully!";
+                TempData["AlertType"] = "success";
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception)
+            {
+                TempData["AlertMessage"] = "An error occurred while updating the bouquet record.";
+                TempData["AlertType"] = "danger";
+                ViewBag.OccasionId = new SelectList(_context.Occasions, "Id", "Name", bouquet.OccasionId);
+                return View(bouquet);
+            }
         }
 
-        // 4. DELETE - Xóa hoa
+        // 4. DELETE - Erase Bouquet Entity
         [HttpGet("delete/{id}")]
         public IActionResult Delete(int id)
         {
-            var bouquet = _context.Bouquets.FirstOrDefault(b => b.Id == id);
-            if (bouquet != null)
+            try
             {
-                if (!string.IsNullOrEmpty(bouquet.ImageUrl))
+                var bouquet = _context.Bouquets.FirstOrDefault(b => b.Id == id);
+                if (bouquet != null)
                 {
-                    string imgPath = Path.Combine(_webHostEnvironment.WebRootPath, bouquet.ImageUrl.TrimStart('/'));
-                    if (System.IO.File.Exists(imgPath)) System.IO.File.Delete(imgPath);
-                }
+                    // Clear binary array images from system folder
+                    if (!string.IsNullOrEmpty(bouquet.ImageUrl))
+                    {
+                        var paths = bouquet.ImageUrl.Split(',');
+                        foreach (var path in paths)
+                        {
+                            string imgPath = Path.Combine(_webHostEnvironment.WebRootPath, path.TrimStart('/'));
+                            if (System.IO.File.Exists(imgPath)) System.IO.File.Delete(imgPath);
+                        }
+                    }
 
-                _context.Bouquets.Remove(bouquet);
-                _context.SaveChanges();
+                    _context.Bouquets.Remove(bouquet);
+                    _context.SaveChanges();
+
+                    TempData["AlertMessage"] = "Bouquet deleted successfully!";
+                    TempData["AlertType"] = "success";
+                }
+                else
+                {
+                    TempData["AlertMessage"] = "The requested bouquet record could not be found.";
+                    TempData["AlertType"] = "danger";
+                }
+            }
+            catch (Exception)
+            {
+                TempData["AlertMessage"] = "Failed to complete deletion due to dependent data structural constraints.";
+                TempData["AlertType"] = "danger";
             }
             return RedirectToAction(nameof(Index));
         }

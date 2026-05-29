@@ -1,31 +1,31 @@
 ﻿@model Shopv2.Models.Message
 @{
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
-    ViewData["Title"] = "Thêm mới Lời Chúc";
+    ViewData["Title"] = "Create New Message";
 }
 
 <section class="content pt-4">
     <div class="container-fluid">
         <div class="card card-primary">
             <div class="card-header">
-                <h3 class="card-title">Tạo Lời Chúc</h3>
+                <h3 class="card-title">Create Message</h3>
             </div>
             <form asp-action="Create" method="post">
                 <div class="card-body">
                     <div class="form-group">
-                        <label for="OccasionId">Chọn Dịp Lễ Áp Dụng</label>
+                        <label for="OccasionId">Select Target Occasion</label>
                         <select asp-for="OccasionId" class="form-control" asp-items="ViewBag.OccasionId">
-                            <option value="">-- Chọn một dịp lễ --</option>
+                            <option value="">-- Select an occasion --</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="Content">Nội Dung Lời Chúc</label>
-                        <textarea asp-for="Content" class="form-control" rows="4" placeholder="Nhập lời chúc ý nghĩa vào đây..." required></textarea>
+                        <label for="Content">Message Content</label>
+                        <textarea asp-for="Content" class="form-control" rows="4" placeholder="Enter meaningful message content here..." required></textarea>
                     </div>
                 </div>
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Lưu lại</button>
-                    <a asp-action="Index" class="btn btn-default">Quay lại</a>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a asp-action="Index" class="btn btn-default">Back to List</a>
                 </div>
             </form>
         </div>
