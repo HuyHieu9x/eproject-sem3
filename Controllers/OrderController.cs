@@ -76,8 +76,9 @@ namespace Shopv2.Controllers
             Cart cart = _context.Carts.FirstOrDefault(x => x.Id == cartId);
             if (cart == null)
             {
-                TempData["FailMessage"] = "Fail to order!";
-                return RedirectToAction("", "cart");
+                ErrorAlertViewModel errorAlert = new ErrorAlertViewModel();
+                errorAlert.message = "Order Fail, Please check your cart again!";
+                return View("ErrorAlert", errorAlert);
             }
             
 
@@ -97,8 +98,9 @@ namespace Shopv2.Controllers
             List<OrderItem> orderItemsInsert = new List<OrderItem>();
             if (orderInsert.Id <= 0)
             {
-                TempData["FailMessage"] = "Fail to order!";
-                return RedirectToAction("", "cart");
+                ErrorAlertViewModel errorAlert = new ErrorAlertViewModel();
+                errorAlert.message = "Order Fail, Please check your cart again!";
+                return View("ErrorAlert", errorAlert);
             }
             orderItemsInsert = (from ci in _context.CartItems
                                 join b in _context.Bouquets
@@ -125,30 +127,45 @@ namespace Shopv2.Controllers
             // Create Recipient Infor
             if (orderItemsInsert == null || orderItemsInsert.Count <= 0)
             {
-                TempData["FailMessage"] = "Fail to order!";
-                return RedirectToAction("", "cart");
+                ErrorAlertViewModel errorAlert = new ErrorAlertViewModel();
+                errorAlert.message = "Order Fail, Please check your cart again!";
+                return View("ErrorAlert", errorAlert);
             }
 
             // Delete Cart after Order Success
             List<CartItem> cartItems = _context.CartItems.Where(cItm => cItm.CartId == cart.Id).ToList();
             //_context.CartItems.RemoveRange(cartItems);
             _context.SaveChanges();
-            return RedirectToAction("detail", "order", new { id = orderInsert.Id });
+
+            // Alert Success screen
+            SuccessViewModel successView = new SuccessViewModel();
+            successView.message = "Check detail of your order ?";
+            successView.oldRedirectUrl = "/cart";
+            successView.newRedirectPageUrl = "/order/detail/"+ orderInsert.Id;
+            return View("Success", successView);
         }
 
         [HttpPost("edit/paid")]
         public IActionResult Payment(int orderId)
         {
             int userId = int.Parse(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
-            Order order = _context.Orders.FirstOrDefault(ord => ord.Id == orderId && ord.UserId == userId && ord.Status == "OC");    //OC: Order Created
+            Order order = _context.Orders.FirstOrDefault(ord => ord.Id == orderId && ord.UserId == userId && ord.Status == "OC" && ord.PaymentStatus != "Y");    //OC: Order Created
             if (order == null)
             {
-                return View("Error");
+                ErrorAlertViewModel errorAlert = new ErrorAlertViewModel();
+                errorAlert.message = "Payment fail, please check your information again!";
+                return View("ErrorAlert", errorAlert);
             }
             order.PaymentStatus = "Y";
             _context.Orders.Update(order);
             _context.SaveChanges();
-            return RedirectToAction("detail", "order", new { id = orderId });
+
+            // Alert Success screen
+            SuccessViewModel successView = new SuccessViewModel();
+            successView.message = "Check detail of your order ?";
+            successView.oldRedirectUrl = "/order";
+            successView.newRedirectPageUrl = "/order/detail/" + orderId;
+            return View("Success", successView);
         }
 
         [HttpPost("edit/book")]
@@ -158,8 +175,9 @@ namespace Shopv2.Controllers
             Order order = _context.Orders.FirstOrDefault(ord => ord.Id == model.OrderId && ord.UserId == userId && ord.Status == "OC" && ord.PaymentStatus == "Y");    //OC: Order Created
             if (order == null)
             {
-                TempData["FailMessage"] = "Fail to process booking!";
-                return RedirectToAction("detail", "order", new { id = model.OrderId });
+                ErrorAlertViewModel errorAlert = new ErrorAlertViewModel();
+                errorAlert.message = "Booking fail, please check your information again!";
+                return View("ErrorAlert", errorAlert);
             }
             // Create Recipient
             Recipient recipientCreate = new Recipient();
@@ -172,8 +190,9 @@ namespace Shopv2.Controllers
             _context.SaveChanges();
             if (recipientCreate.Id <= 0)
             {
-                TempData["FailMessage"] = "Fail to process booking!";
-                return RedirectToAction("detail", "order", new { id = model.OrderId });
+                ErrorAlertViewModel errorAlert = new ErrorAlertViewModel();
+                errorAlert.message = "Booking fail, please check your information again!";
+                return View("ErrorAlert", errorAlert);
             }
             // Update Order Status
             var now = DateTime.Now;
@@ -199,7 +218,14 @@ namespace Shopv2.Controllers
             _context.Orders.Update(order);
 
             _context.SaveChanges();
-            return RedirectToAction("Index");
+
+
+            // Alert Success screen
+            SuccessViewModel successView = new SuccessViewModel();
+            successView.message = "Check detail of your order ?";
+            successView.oldRedirectUrl = "/order";
+            successView.newRedirectPageUrl = "/order/detail/" + order.Id;
+            return View("Success", successView);
         }
     }
 }

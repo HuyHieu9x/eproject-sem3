@@ -1,0 +1,157 @@
+﻿@model Shopv2.Models.ViewModels.SuccessViewModel;
+@{
+    Layout = null;
+    ViewData["Title"] = "Success";
+}
+
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+
+    body {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #f2f4f8;
+    }
+
+    /* Overlay */
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Popup */
+    .popup {
+        width: 400px;
+        background: #fff;
+        border-radius: 12px;
+        padding: 25px;
+        text-align: center;
+        animation: popup 0.3s ease;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    @@keyframes popup {
+        from
+
+    {
+        transform: scale(0.7);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    }
+
+    /* Success Icon */
+    .icon {
+        width: 70px;
+        height: 70px;
+        background: #e6f7ec;
+        color: #28a745;
+        font-size: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        margin: 0 auto 15px;
+    }
+
+    .popup h2 {
+        color: #28a745;
+        margin-bottom: 10px;
+    }
+
+    .popup p {
+        color: #555;
+        font-size: 14px;
+        margin-bottom: 25px;
+        line-height: 1.5;
+    }
+
+    /* Button Group */
+    .btn-group {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    button, .btn {
+        width:70px;
+        padding: 10px 0px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: 0.3s;
+    }
+
+    /* OK Button */
+    .ok-btn {
+        background: #28a745;
+        color: #fff;
+    }
+
+        .ok-btn:hover {
+            background: #218838;
+        }
+
+    /* Cancel Button */
+    .cancel-btn {
+        background: #6c757d;
+        color: #fff;
+    }
+
+        .cancel-btn:hover {
+            background: #5a6268;
+        }
+</style>
+@* <div class="container">
+    <div class="mb-5 mt-5" style="padding: 150px 0"></div>
+</div>
+<div class="popup-overlay active" id="popupOverlay">
+    <div class="custom-popup">
+        <div class="success-icon">&checkmark;</div>
+        <h2>Success!</h2>
+        <p>@Model.message</p>
+        <a class="btn btn-secondary" style="width:70px;margin:5px" href="@Model.oldRedirectUrl">Cancel</a>
+        <a class="btn btn-primary" style="width:70px;margin:5px" href="@Model.newRedirectPageUrl">Ok</a>
+    </div>
+</div> *@
+
+<div class="overlay" id="overlay">
+    <div class="popup">
+        <div class="icon">✔</div>
+        <h2>Success</h2>
+        <p>@Model.message</p>
+        <div class="btn-group">
+            <a class="btn cancel-btn" href="@Model.oldRedirectUrl" style="width:70px;text-decoration:none">
+                Cancel
+            </a>
+
+            <a class="btn ok-btn" href="@Model.newRedirectPageUrl" style="width:70px;text-decoration:none">
+                Ok
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+</script>
