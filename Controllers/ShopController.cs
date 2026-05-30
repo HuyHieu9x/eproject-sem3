@@ -58,7 +58,17 @@ namespace Shopv2.Controllers
         public IActionResult Detail(int id)
         {
             var bouquet = _context.Bouquets.FirstOrDefault(b => b.Id == id);
-            if (bouquet == null) return NotFound();
+
+            // Nếu không tìm thấy bó hoa, trả về View thông báo lỗi lịch sự thay vì NotFound khô khan
+            if (bouquet == null)
+            {
+                var errorModel = new ErrorAlertViewModel
+                {
+                    // Thay thế bằng thuộc tính thực tế trong ErrorAlertViewModel của bạn (ví dụ: Message hoặc ErrorMessage)
+                    message = "The requested bouquet could not be found."
+                };
+                return View("ErrorAlert", errorModel);
+            }
 
             var occasion = _context.Occasions.FirstOrDefault(o => o.Id == bouquet.OccasionId);
             ViewBag.OccasionName = occasion?.Name;
