@@ -121,7 +121,11 @@ namespace Shopv2.Controllers
                                  Quantity = ci.Quantity
                              }).ToList();
 
-            return View(cartItems);
+            CartViewModel cartViewModel = new CartViewModel();
+            cartViewModel.cartId = cart.Id;
+            cartViewModel.cartItemsView = cartItems;
+
+            return View(cartViewModel);
         }
 
         [HttpPost("increase")]

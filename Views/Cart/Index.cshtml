@@ -1,4 +1,4 @@
-﻿@model List<Shopv2.Models.ViewModels.CartItemViewModel>
+﻿@model Shopv2.Models.ViewModels.CartViewModel
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
@@ -80,6 +80,20 @@
             opacity: 0.8;
         }
 
+    .success-btn {
+        color: #fff;
+        background-color: #28a745;
+        border: none;
+        padding: 8px 14px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .success-btn:hover {
+        opacity: 0.8;
+    }
+
     .cart-product-img {
         width: 90px;
         height: 90px;
@@ -123,7 +137,7 @@
 
                                         <h2>Shopping Cart</h2>
 
-                                        @if (!Model.Any())
+                                        @if (!Model.cartItemsView.Any())
                                         {
                                             <div class="alert alert-warning">
                                                 Cart is empty
@@ -152,7 +166,7 @@
                                                         int stt = 1;
                                                     }
 
-                                                    @foreach (var item in Model)
+                                                    @foreach (var item in Model.cartItemsView)
                                                     {
                                                         <tr>
 
@@ -245,6 +259,13 @@
                                                 </tbody>
 
                                             </table>
+                                            <div class="container" style="text-align:center">
+                                                @using (Html.BeginForm("create", "order", FormMethod.Post))
+                                                {
+                                                    <input type="hidden" name="cartId" value="@Model.cartId" />
+                                                    <button class="success-btn" type="submit">Submit Order</button>
+                                                }
+                                            </div>
                                         }
 
                                     </div>
