@@ -21,6 +21,23 @@
 		}
 		/*# sourceURL=wp-img-auto-sizes-contain-inline-css */
 	</style>
+	<style>
+		.btn-logout-link {
+			background: transparent;
+			border: none;
+			padding: 0;
+			margin: 0;
+			color: #000;
+			font-size: 14px;
+			cursor: pointer;
+			text-decoration: underline;
+			transition: all 0.2s ease;
+		}
+
+			.btn-logout-link:hover {
+				color: #c8a96a;
+			}
+	</style>
 
 	<style id='wp-emoji-styles-inline-css' type='text/css'>
 
@@ -715,19 +732,20 @@
 													<nav id="site-navigation" class="floomi-dropdown">
 														<div class="menu-main-menu-container">
 															<ul id="primary-menu" class="floomi-dropdown-ul menu">
-																<li class="level-0 menu-item-56293      menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-56288 current_page_item current-menu-ancestor current-menu-parent current_page_parent current_page_ancestor menu-item-has-children  std-menu      ">
-																	<a href="index.html"><span class="menu-item-text">Home</span></a><span tabindex=0 class="dropdown-symbol"><i class="feather-chevron-down"></i></span>
-																	<ul class="sub-menu">
+																<li class="level-0 menu-item-45125  menu-item-has-children    menu-item menu-item-type-post_type menu-item-object-page  mega-menu mega-menu-custom-width      ">
+																	<a href="/"><span class="menu-item-text">Home</span></a><span tabindex=0 class="dropdown-symbol"></span>
+																	@* <ul class="sub-menu">
 																		<li class="level-1 menu-item-61344      menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home  std-menu      "><a href="index.html">Home 1</a></li>
 																		<li class="level-1 menu-item-61345      menu-item menu-item-type-custom menu-item-object-custom  std-menu      "><a href="home-2/index.html">Home 2</a></li>
 																		<li class="level-1 menu-item-61346      menu-item menu-item-type-custom menu-item-object-custom  std-menu      "><a href="home-3/index.html">Home 3</a></li>
 																		<li class="level-1 menu-item-61347      menu-item menu-item-type-custom menu-item-object-custom  std-menu      "><a href="home-4/index.html">Home 4</a></li>
 																		<li class="level-1 menu-item-61348      menu-item menu-item-type-custom menu-item-object-custom  std-menu      "><a href="home-5/index.html">Home 5</a></li>
 																		<li class="level-1 menu-item-61349      menu-item menu-item-type-custom menu-item-object-custom  std-menu      "><a href="home-6/index.html">Home 6</a></li>
-																	</ul>
+																	</ul> *@
 																</li>
 																<li class="level-0 menu-item-45125  menu-item-has-children    menu-item menu-item-type-post_type menu-item-object-page  mega-menu mega-menu-custom-width     " style="--megamenu-width:1000px;">
-																	<a href="shop/index.html"><span class="menu-item-text">Shop</span></a><span tabindex=0 class="dropdown-symbol"><i class="feather-chevron-down"></i></span><div class="sub-menu">
+																	<a href="/bouquets"><span class="menu-item-text">Bouquets</span></a><span tabindex=0 class="dropdown-symbol"></span>
+																	@* <div class="sub-menu">
 																		<div data-elementor-type="wp-post" data-elementor-id="9121" class="elementor elementor-9121">
 																			<div class="elementor-element elementor-element-f3ba6ef content-megamenu e-flex e-con-boxed e-con e-parent" data-id="f3ba6ef" data-element_type="container">
 																				<div class="e-con-inner">
@@ -1028,9 +1046,20 @@
 																				</div>
 																			</div>
 																		</div>
-																	</div>
+																	</div> *@
 																</li>
-																<li class="level-0 menu-item-45123  menu-item-has-children    menu-item menu-item-type-post_type menu-item-object-product  mega-menu mega-menu-custom-width     " style="--megamenu-width:1000px;">
+																<li class="level-0 menu-item-45125  menu-item-has-children    menu-item menu-item-type-post_type menu-item-object-page  mega-menu mega-menu-custom-width      ">
+																	<a href="/orders"><span class="menu-item-text">Orders</span></a><span tabindex=0 class="dropdown-symbol"></span>
+																	@* <ul class="sub-menu">
+																		<li class="level-1 menu-item-61344      menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home  std-menu      "><a href="index.html">Home 1</a></li>
+																		<li class="level-1 menu-item-61345      menu-item menu-item-type-custom menu-item-object-custom  std-menu      "><a href="home-2/index.html">Home 2</a></li>
+																		<li class="level-1 menu-item-61346      menu-item menu-item-type-custom menu-item-object-custom  std-menu      "><a href="home-3/index.html">Home 3</a></li>
+																		<li class="level-1 menu-item-61347      menu-item menu-item-type-custom menu-item-object-custom  std-menu      "><a href="home-4/index.html">Home 4</a></li>
+																		<li class="level-1 menu-item-61348      menu-item menu-item-type-custom menu-item-object-custom  std-menu      "><a href="home-5/index.html">Home 5</a></li>
+																		<li class="level-1 menu-item-61349      menu-item menu-item-type-custom menu-item-object-custom  std-menu      "><a href="home-6/index.html">Home 6</a></li>
+																	</ul> *@
+																</li>
+																@* <li class="level-0 menu-item-45123  menu-item-has-children    menu-item menu-item-type-post_type menu-item-object-product  mega-menu mega-menu-custom-width     " style="--megamenu-width:1000px;">
 																	<a href="shop/the-winter-berry/index.html"><span class="menu-item-text">Products</span></a><span tabindex=0 class="dropdown-symbol"><i class="feather-chevron-down"></i></span><div class="sub-menu">
 																		<div data-elementor-type="wp-post" data-elementor-id="16554" class="elementor elementor-16554">
 																			<div class="elementor-element elementor-element-c177192 content-megamenu e-flex e-con-boxed e-con e-parent" data-id="c177192" data-element_type="container">
@@ -1593,7 +1622,7 @@
 																		<li class="level-1 menu-item-45128      menu-item menu-item-type-post_type menu-item-object-page  std-menu      "><a href="faq-2/index.html">Faq 2</a></li>
 																		<li class="level-1 menu-item-45132      menu-item menu-item-type-custom menu-item-object-custom  std-menu      "><a href="404/index.html">Page 404</a></li>
 																	</ul>
-																</li>
+																</li> *@
 															</ul>
 														</div>
 													</nav><!-- #site-navigation -->
@@ -1606,9 +1635,25 @@
 
 
 							<div class="bwp-column bwp-column-3 horizontal-end">
+								<div class="" data-component-id="search_icon" style="    min-width: 250px;
+    font-weight: 600;">
+									@if (User.Identity != null && User.Identity.IsAuthenticated)
+									{
+										<span>
+											Hi: @User.Identity.Name
+										</span>
+										<form asp-controller="Home"
+											  asp-action="Logout"
+											  method="post"
+											  style="display:inline-block;">
+											<button type="submit" class="btn-logout-link">
+												Logout
+											</button>
+										</form>
+									}
+								</div>
 
-
-								<div class="bwp-builder-item bwp-component-search-icon" data-component-id="search_icon">
+								@* <div class="bwp-builder-item bwp-component-search-icon" data-component-id="search_icon">
 									<div class="search-box search-dropdown header-search-icon">
 										<div class="search-toggle">
 											<span class="bwp-svg-icon">
@@ -1618,7 +1663,7 @@
 											</span>
 										</div>
 									</div>
-								</div>
+								</div> *@
 
 								<div class="bwp-builder-item bwp-component-account-icon" data-component-id="account_icon">
 									<div class="login-header">
@@ -1726,7 +1771,8 @@
 										</div> *@
 
 									</div>
-								</div><div class="bwp-builder-item bwp-component-wishlist-icon" data-component-id="wishlist_icon">
+								</div>
+								<div class="bwp-builder-item bwp-component-wishlist-icon" data-component-id="wishlist_icon">
 									<div class="wishlist-box">
 										<a href="wishlist/index.html">
 											<span class="bwp-svg-icon">
@@ -1737,11 +1783,42 @@
 										</a>
 									</div>
 								</div>
-								<div class="bwp-builder-item bwp-component-cart-icon-text" data-component-id="cart_icon_text">
+
+
+								<div class="bwp-builder-item bwp-component-wishlist-icon" data-component-id="wishlist_icon">
+									<div class="wishlist-box">
+										<a href="/cart">
+											<span class="bwp-svg-icon">
+												<svg width="18" height="22" viewBox="0 0 18 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<path d="M17.9895 21.0812L16.6661 6.17252C16.63 5.76537 16.2927 5.45352 15.8887 5.45352H13.1596V4.2084C13.1596 1.88789 11.2935 0 8.99969 0C6.706 0 4.84008 1.88789 4.84008 4.2084V5.45352H2.10915C1.70512 5.45352 1.3678 5.76537 1.33169 6.17252L0.00312121 21.1398C-0.0164456 21.3607 0.0566176 21.5796 0.204513 21.7432C0.352409 21.9068 0.561504 22 0.780589 22H17.2173C17.218 22 17.2188 22 17.2194 22C17.6506 22 18 21.6464 18 21.2104C17.9999 21.1664 17.9964 21.1232 17.9895 21.0812ZM6.40126 4.2084C6.40126 2.75871 7.56694 1.57929 8.99979 1.57929C10.4327 1.57929 11.5985 2.75871 11.5985 4.2084V5.45352H6.40126V4.2084ZM1.63445 20.4208L2.82282 7.03281H4.84008V8.44491C4.84008 8.88101 5.18947 9.23456 5.62067 9.23456C6.05187 9.23456 6.40126 8.88101 6.40126 8.44491V7.03281H11.5985V8.44491C11.5985 8.88101 11.9479 9.23456 12.3791 9.23456C12.8103 9.23456 13.1597 8.88101 13.1597 8.44491V7.03281H15.1751L16.3635 20.4208H1.63445Z" fill="black" />
+												</svg>                          <span class="count-wishlist">0</span>
+											</span>
+										</a>
+									</div>
+								</div>
+
+								@* <div class="bwp-builder-item bwp-component-cart-icon-text" data-component-id="cart_icon_text">
+									<div class="floomi-topcart light">
+										<div class="mini-cart-text top-cart">
+											<a href="/cart">
+												<div class="mini-cart-text top-cart">
+													<div class="icons-cart text-icon-flex">
+														
+														<span class="with-text">
+															Cart				(<span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">&#036;</span>0.00</span>)
+														</span>
+													</div>
+												</div>
+
+											</a>
+										</div>
+									</div>
+									
+
 									<div class="remove-cart-shadow"></div>
-									<div class="floomi-topcart popup light">
-										<div class="dropdown mini-cart-text top-cart" data-text_added="Product was added to cart successfully!">
-											<a class="cart-icon" href="#" role="button">
+									<div class="floomi-topcart light">
+										<div class="mini-cart-text top-cart" data-text_added="Product was added to cart successfully!">
+											<a class="cart-icon" href="/cart" >
 												<div class="icons-cart text-icon-flex">
 													<span class="bwp-svg-icon">
 														<svg width="18" height="22" viewBox="0 0 18 22" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1753,7 +1830,7 @@
 													</span>
 												</div>
 											</a>
-											<div class="cart-popup">
+										 <div class="cart-popup">
 												<div class="woocommerce-cart-header" data-total_price="0" data-free_ship="500.00" data-count="0">
 													<div class="cart-details">
 														<div class="remove-cart">
@@ -1774,7 +1851,8 @@
 											</div>
 										</div>
 									</div>
-								</div>
+								</div> *@
+
 							</div>
 
 						</div>

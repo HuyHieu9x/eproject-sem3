@@ -4,6 +4,7 @@ using Shopv2.Data;
 using Shopv2.Models;
 using Shopv2.Models.ViewModels;
 using System;
+using System.Security.Claims;
 
 namespace Shopv2.Controllers
 {
@@ -17,11 +18,18 @@ namespace Shopv2.Controllers
             _context = context;
         }
 
-        [HttpPost]
-        public IActionResult AddToCart(int bouquetId)
+        [HttpPost("add-to-cart")]
+        public IActionResult AddToCart(int bouquetId, int quantity = 1)
         {
-            // TEMP: hardcode user
-            int userId = 1;
+            // lấy user login
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userIdClaim == null)
+            {
+                return Redirect("/login");
+            }
+
+            int userId = int.Parse(userIdClaim);
 
             // tìm cart của user
             var cart = _context.Carts
@@ -58,7 +66,7 @@ namespace Shopv2.Controllers
             if (cartItem != null)
             {
                 // đã có => tăng quantity
-                cartItem.Quantity += 1;
+                cartItem.Quantity += quantity;
             }
             else
             {
@@ -67,7 +75,7 @@ namespace Shopv2.Controllers
                 {
                     CartId = cart.Id,
                     BouquetId = bouquetId,
-                    Quantity = 1,
+                    Quantity = quantity,
                     UnitPrice = bouquet.Price
                 };
 
@@ -83,7 +91,12 @@ namespace Shopv2.Controllers
         public IActionResult Index()
         {
             // TEMP
-            int userId = 2;
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userIdClaim == null)
+            {
+                return Redirect("/login");
+            }
+            int userId = int.Parse(userIdClaim);
 
             var cart = _context.Carts
                 .FirstOrDefault(x => x.UserId == userId);

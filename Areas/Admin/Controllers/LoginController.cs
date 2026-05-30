@@ -86,7 +86,7 @@ namespace Shopv2.Areas.Admin.Controllers
             await HttpContext.SignOutAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Login");
         }
     }
 }

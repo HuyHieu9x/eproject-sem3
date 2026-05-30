@@ -1,12 +1,47 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <style>
-	.page-title {
-		height: 300px;
+	.account-banner {
+		background-image: url('/client/wp-content/themes/floomi/assets/images/bg-breadcrumb.jpg');
 		background-size: cover;
 		background-position: center;
 		background-repeat: no-repeat;
+		padding: 120px 0;
+		position: relative;
+	}
+
+		.account-banner::before {
+			content: "";
+			position: absolute;
+			inset: 0;
+			background: rgba(0,0,0,0.35);
+		}
+
+		.account-banner .container {
+			position: relative;
+			z-index: 2;
+		}
+
+	.content-title-heading {
+		margin-bottom: 15px;
+	}
+
+	.text-title-heading {
+		color: #fff;
+		font-size: 52px;
+		font-weight: 700;
+		margin-bottom: 15px;
+		text-align: center;
+	}
+
+	#breadcrumb,
+	#breadcrumb a,
+	#breadcrumb .current {
+		color: #fff;
+		font-size: 16px;
+		text-align: center;
 	}
 </style>
 <div class="bwp-header bwp-mobile_offcanvas bwp-offcanvas-menu">
@@ -1116,7 +1151,20 @@
 				<article id="post-56288" class="post-56288 page type-page status-publish hentry">
 					<div class="entry-content clearfix">
 						<div data-elementor-type="wp-page" data-elementor-id="56288" class="elementor elementor-56288">
-							<div class="elementor-element elementor-element-fbee29b e-con-full e-flex e-con e-parent" data-id="fbee29b" data-element_type="container">
+							<div class="account-banner" style="margin-bottom: 15px">
+								<div class="container">
+									<div class="content-title-heading">
+										@* <span class="back-to-shop">Shop</span> *@
+										<h1 class="text-title-heading">
+											Home
+										</h1>
+									</div><!-- Page Title -->
+									<div id="breadcrumb" class="breadcrumb"><div class="bwp-breadcrumb"><a href="../../index.html">Home</a> <span class="delimiter">/</span> <span class="current">Home</span> </div></div>
+								</div>
+							</div><!-- .container -->
+
+
+							@* <div class="elementor-element elementor-element-fbee29b e-con-full e-flex e-con e-parent" data-id="fbee29b" data-element_type="container">
 								<div class="elementor-element elementor-element-22b154f elementor-widget elementor-widget-slider_revolution" data-id="22b154f" data-element_type="widget" data-widget_type="slider_revolution.default">
 									<div class="elementor-widget-container">
 
@@ -1526,7 +1574,8 @@
 
 									</div>
 								</div>
-							</div>
+							</div> *@
+
 							<div class="elementor-element elementor-element-32dd15a e-flex e-con-boxed e-con e-parent" data-id="32dd15a" data-element_type="container">
 								<div class="e-con-inner">
 									<div class="elementor-element elementor-element-e0c541e elementor-widget elementor-widget-heading" data-id="e0c541e" data-element_type="widget" data-widget_type="heading.default">

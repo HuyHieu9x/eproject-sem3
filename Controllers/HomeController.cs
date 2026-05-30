@@ -102,7 +102,7 @@ namespace Shopv2.Controllers
 
             if (user == null)
             {
-                ModelState.AddModelError("", "Tài khoản hoặc mật khẩu không đúng");
+                ModelState.AddModelError("", "Email or password incorrect");
                 return View(model);
             }
 
@@ -138,14 +138,14 @@ namespace Shopv2.Controllers
             return Redirect("/");
         }
 
-        [HttpGet("logout")]
+        [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme
             );
 
-            return Redirect("/my-account");
+            return Redirect("/login");
         }
 
         [HttpGet("forget-password")]
