@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Shopv2.Controllers
 {
-    [Route("shop")]
+    [Route("bouquets")]
     public class ShopController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -18,7 +18,7 @@ namespace Shopv2.Controllers
             _context = context;
         }
         [HttpGet("")]
-        public IActionResult Index(int? occasionId, int page = 1, int pageSize = 10)
+        public IActionResult Index(int? occasionId, int page = 1, int pageSize = 2)
         {
             page = Math.Max(1, page);
             pageSize = Math.Max(1, pageSize);
@@ -34,6 +34,7 @@ namespace Shopv2.Controllers
             var totalPages = (int)Math.Ceiling(totalBouquets / (double)pageSize);
 
             var bouquets = bouquetsQuery
+                .Where(b => b.IsActive)
                 .OrderByDescending(b => b.CreatedAt)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
@@ -56,36 +57,30 @@ namespace Shopv2.Controllers
         [HttpGet("detail/{id}")]
         public IActionResult Detail(int id)
         {
-            // 1. Lấy sản phẩm dựa theo Id
             var bouquet = _context.Bouquets.FirstOrDefault(b => b.Id == id);
             if (bouquet == null) return NotFound();
 
-            // 2. Lấy tên dịp lễ theo đúng logic của bạn
             var occasion = _context.Occasions.FirstOrDefault(o => o.Id == bouquet.OccasionId);
             ViewBag.OccasionName = occasion?.Name;
 
-            // 3. XỬ LÝ CHUỖI IMAGEURL CHỨA NHIỀU ẢNH
             var allImages = new List<string>();
-            string mainImage = "/images/default-bouquet.jpg"; // Ảnh sơ cua nếu sản phẩm không có ảnh
+            string mainImage = "/images/default-bouquet.jpg";
 
             if (!string.IsNullOrEmpty(bouquet.ImageUrl))
             {
-                // Tách chuỗi ImageUrl dựa trên dấu phẩy thành List các đường dẫn ảnh thật
                 allImages = bouquet.ImageUrl
                                    .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                                    .Select(img => img.Trim())
                                    .ToList();
 
-                // Lấy tấm ảnh đầu tiên trong chuỗi để làm ảnh hiển thị lớn mặc định ban đầu
                 if (allImages.Any())
                 {
                     mainImage = allImages.First();
                 }
             }
 
-            // Truyền dữ liệu sang View qua ViewBag
-            ViewBag.MainImage = mainImage; // Đường dẫn 1 ảnh lớn
-            ViewBag.AllImages = allImages; // Danh sách tất cả các ảnh để làm thumbnails
+            ViewBag.MainImage = mainImage;
+            ViewBag.AllImages = allImages;
 
             return View(bouquet);
         }

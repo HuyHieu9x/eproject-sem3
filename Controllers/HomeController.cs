@@ -26,10 +26,15 @@ namespace Shopv2.Controllers
         }
 
         [HttpGet("")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var latestBouquets = await _context.Bouquets
+                                        .Where(b => b.IsActive)  
+                                        .OrderByDescending(b => b.CreatedAt)
+                                        .Take(6)
+                                        .ToListAsync();
 
-            return View("index");
+            return View("index", latestBouquets); 
         }
 
         [HttpGet("register")]
@@ -263,5 +268,6 @@ namespace Shopv2.Controllers
             }
             return View(errorViewModel);
         }
+
     }
 }
