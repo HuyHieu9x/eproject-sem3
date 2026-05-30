@@ -21,10 +21,20 @@ namespace Shopv2.Controllers
         }
 
         [HttpGet("")]
-        public IActionResult Index()
+        public IActionResult Index(int page = 1)
         {
-            List<Order> orders = _context.Orders.OrderBy(ord => ord.UserId).ThenBy(ord => ord.CreatedAt).ToList();
-            return View(orders);
+            int pageSize = 10;
+            page = Math.Max(1, page);
+            pageSize = Math.Max(1, pageSize);
+            List<Order> orders = _context.Orders.OrderBy(ord => ord.UserId).ThenBy(ord => ord.CreatedAt)
+                                         .Skip((page - 1) * pageSize)
+                                         .Take(pageSize).ToList();
+            OrderAdminViewModel orderViewModel = new OrderAdminViewModel();
+            orderViewModel.orders = orders;
+            orderViewModel.CurrentPage = page;
+            int totalCnt = _context.Orders.Count();
+            orderViewModel.TotalPages = (int)Math.Ceiling(totalCnt / (double)pageSize);
+            return View(orderViewModel);
         }
 
         [HttpGet("detail/{id}")]

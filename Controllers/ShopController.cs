@@ -18,7 +18,7 @@ namespace Shopv2.Controllers
             _context = context;
         }
         [HttpGet("")]
-        public IActionResult Index(int? occasionId, int page = 1, int pageSize = 10)
+        public IActionResult Index(int? occasionId, int page = 1, int pageSize = 8)
         {
             page = Math.Max(1, page);
             pageSize = Math.Max(1, pageSize);

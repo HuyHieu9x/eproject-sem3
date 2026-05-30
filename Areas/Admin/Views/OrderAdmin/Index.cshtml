@@ -1,4 +1,4 @@
-﻿@model List<Shopv2.Models.Order>
+﻿@model Shopv2.Models.ViewModels.OrderAdminViewModel
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
@@ -63,7 +63,7 @@
                             int no = 1;
                         }
 
-                        @foreach (var order in Model)
+                        @foreach (var order in Model.orders)
                         {
                             <tr class="text-center">
 
@@ -145,6 +145,27 @@
                     </tbody>
 
                 </table>
+                @if (Model.TotalPages >= 1){
+                <div class="card-footer clearfix">
+                        <ul class="pagination pagination-sm m-0 d-flex justify-content-center">
+                        <!-- Previous Page Button -->
+                        <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
+                            <a class="page-link" asp-action="Index" asp-route-page="@(Model.CurrentPage - 1)" asp-route-searchString="@Model.CurrentPage">&laquo;</a>
+                        </li>
+                            <!-- Dynamic loop for multiple pages -->
+                            @for (int i = 1; i <= Model.TotalPages; i++)
+                            {
+                                <li class="page-item @(Model.CurrentPage == i ? "active" : "")">
+                                    <a class="page-link" asp-action="Index" asp-route-page="@i" >@i</a>
+                                </li>
+                            }
+                        <!-- Next Page Button -->
+                            <li class="page-item @(Model.CurrentPage == Model.TotalPages || Model.TotalPages <= 1 ? "disabled" : "")">
+                            <a class="page-link" asp-action="Index" asp-route-page="@(Model.CurrentPage + 1)">&raquo;</a>
+                        </li>
+                    </ul>
+                </div>
+                }
             </div>
         </div>
     </div>
