@@ -1,17 +1,17 @@
-﻿@model Shopv2.Models.Occasion
+﻿@model Shopv2.Models.Message
 @{
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
-    ViewData["Title"] = "Update Occasion";
+    ViewData["Title"] = "Update Message";
 }
 
 <section class="content pt-4">
     <div class="container-fluid">
         <div class="card card-warning">
             <div class="card-header">
-                <h3 class="card-title">Edit Occasion</h3>
+                <h3 class="card-title">Edit Message</h3>
             </div>
 
-            <form asp-action="Edit" method="post" asp-route-id="@Model.Id" id="occasionForm" novalidate>
+            <form asp-action="Edit" method="post" id="messageForm" novalidate>
                 <input type="hidden" asp-for="Id" />
 
                 <div class="card-body">
@@ -24,9 +24,21 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="Name">Occasion Name</label>
-                        <input type="text" asp-for="Name" class="form-control" id="Name" required>
-                        <span asp-validation-for="Name" class="text-danger text-sm"></span>
+                        <label>Editing Message ID: @Model.Id</label>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="OccasionId">Change Occasion</label>
+                        <select asp-for="OccasionId" class="form-control" asp-items="ViewBag.OccasionId" required>
+                            <option value="">-- Select an occasion --</option>
+                        </select>
+                        <span asp-validation-for="OccasionId" class="text-danger text-sm"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Content">Message Content</label>
+                        <textarea asp-for="Content" class="form-control" rows="4" required></textarea>
+                        <span asp-validation-for="Content" class="text-danger text-sm"></span>
                     </div>
                 </div>
 
@@ -44,22 +56,22 @@
 
     <script>
         $(document).ready(function () {
-            var form = $('#occasionForm');
+            var form = $('#messageForm');
 
             form.on('submit', function (e) {
                 var formElement = form[0];
 
-                // If form elements do not pass validity validation checks
+                // If any field fails validation constraints
                 if (!formElement.checkValidity()) {
                     e.preventDefault();
                     e.stopPropagation();
 
                     $('#validationSummaryAlert').fadeIn();
 
-                    // Iterate inputs and add visual validation error indicator wrappers
+                    // Loop through all inputs to instantly toggle red error highlight states
                     form.find('.form-control').each(function () {
                         if (!this.checkValidity()) {
-                            $(this).addClass('is-invalid'); // Highlights input field border in red
+                            $(this).addClass('is-invalid'); // Turns input border red
                         } else {
                             $(this).removeClass('is-invalid');
                         }
@@ -69,7 +81,7 @@
                 form.addClass('was-validated');
             });
 
-            // Dynamic interaction: clear red highlighting structural classes real-time as data enters inputs
+            // Real-time tracking: Strip off red borders immediately as the user types/updates fields
             form.find('.form-control').on('input change', function () {
                 if (this.checkValidity()) {
                     $(this).removeClass('is-invalid');
@@ -77,7 +89,7 @@
                     $(this).addClass('is-invalid');
                 }
 
-                // Smoothly fade out global warning layout component if data inputs pass validation rules
+                // Smoothly dismiss the top alert banner once the whole configuration passes validity tests
                 if (form[0].checkValidity()) {
                     $('#validationSummaryAlert').fadeOut();
                 }

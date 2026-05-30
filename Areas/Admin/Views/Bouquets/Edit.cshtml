@@ -1,0 +1,194 @@
+﻿@model Shopv2.Models.Bouquet
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Edit Bouquet";
+
+    // Check if there are already images attached to this record in the database
+    bool hasExistingImages = !string.IsNullOrEmpty(Model.ImageUrl);
+}
+
+<section class="content pt-4">
+    <div class="container-fluid">
+        <div class="card card-warning">
+            <div class="card-header">
+                <h3 class="card-title">Modify Bouquet Information</h3>
+            </div>
+
+            <form asp-action="Edit" method="post" enctype="multipart/form-data" id="bouquetEditForm" novalidate>
+                <input type="hidden" asp-for="Id" />
+
+                <div class="card-body">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger alert-dismissible fade show" role="alert" style="display:none;" id="validationSummaryAlert">
+                        <i class="icon fas fa-exclamation-triangle"></i>
+                        Please fill in all required fields and ensure the product has at least one image before updating.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Name">Bouquet Name</label>
+                        <input type="text" asp-for="Name" class="form-control" required>
+                        <span asp-validation-for="Name" class="text-danger text-sm"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="OccasionId">Target Occasion</label>
+                        <select asp-for="OccasionId" class="form-control" asp-items="ViewBag.OccasionId" required></select>
+                        <span asp-validation-for="OccasionId" class="text-danger text-sm"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Price">Price (USD)</label>
+                        <input type="number" asp-for="Price" class="form-control" required min="0">
+                        <span asp-validation-for="Price" class="text-danger text-sm"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Current Uploaded Images</label>
+                        <div class="d-flex flex-wrap gap-2 mb-2">
+                            @if (hasExistingImages)
+                            {
+                                var images = Model.ImageUrl.Split(',');
+                                foreach (var imgUrl in images)
+                                {
+                                    <img src="@imgUrl" alt="Product attachment" class="img-thumbnail mr-2" style="max-width: 100px; max-height: 100px;" />
+                                }
+                            }
+                            else
+                            {
+                                <span class="text-muted">No images attached to this entry</span>
+                            }
+                        </div>
+
+                        <label for="ImageFiles">Select new configuration batch to override image array (Leave blank to preserve current layout)</label>
+                        <input type="file" id="ImageFiles" name="ImageFiles" class="form-control-file form-control" accept="image/*" multiple>
+                        <span class="text-danger text-sm" id="imageFilesValidationError"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Description">Product Description</label>
+                        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                    </div>
+
+                    <div class="form-group form-check">
+                        <input type="checkbox" asp-for="IsActive" class="form-check-input">
+                        <label class="form-check-label" for="IsActive">Publish publicly on storefront</label>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-warning">Update Product</button>
+                    <a asp-action="Index" class="btn btn-default">Back to List</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script src="~/admin/plugins/jquery-validation/jquery.validate.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+                $('.number-only').on('keydown', function (e) {
+            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13]) !== -1 ||
+                (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+                (e.keyCode === 67 && (e.ctrlKey === true || e.metaKey === true)) ||
+                (e.keyCode === 86 && (e.ctrlKey === true || e.metaKey === true)) ||
+                (e.keyCode === 88 && (e.ctrlKey === true || e.metaKey === true)) ||
+                (e.keyCode >= 35 && e.keyCode <= 39)) {
+                     return;
+            }
+
+
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
+
+        $('.number-only').on('paste', function (e) {
+            var pasteData = e.originalEvent.clipboardData.getData('text');
+            if ($.isNumeric(pasteData) == false) {
+                e.preventDefault();
+            }
+        });
+        // -----------------------------------------------------
+
+            var form = $('#bouquetEditForm');
+            var imageInput = $('#ImageFiles');
+            var imageErrorMsg = $('#imageFilesValidationError');
+
+            // Server-side variable passed dynamically into Javascript engine context evaluation
+            var hasExistingImages = @hasExistingImages.ToString().ToLower();
+
+            form.on('submit', function (e) {
+                var formElement = form[0];
+                var isImageValid = true;
+
+                // CRITICAL VALIDATION RULE:
+                // If it doesn't have old images in DB AND the user hasn't selected new files to upload
+                if (!hasExistingImages && imageInput[0].files.length === 0) {
+                    imageInput.addClass('is-invalid');
+                    imageErrorMsg.text('This product currently has no images. Please upload at least one image.');
+                    isImageValid = false;
+                } else {
+                    imageInput.removeClass('is-invalid');
+                    imageErrorMsg.text('');
+                }
+
+                // If text input validations fail or our custom image checks fail
+                if (!formElement.checkValidity() || !isImageValid) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    $('#validationSummaryAlert').fadeIn();
+
+                    form.find('.form-control').each(function () {
+                        if (this.id === 'ImageFiles') {
+                            // File control validation trace
+                            if (!hasExistingImages && this.files.length === 0) {
+                                $(this).addClass('is-invalid');
+                            }
+                        } else {
+                            // Text elements standard checks
+                            if (!this.checkValidity()) {
+                                $(this).addClass('is-invalid');
+                            } else {
+                                $(this).removeClass('is-invalid');
+                            }
+                        }
+                    });
+                }
+
+                form.addClass('was-validated');
+            });
+
+            // Dynamic monitoring loops
+            form.find('.form-control').on('input change', function () {
+                if (this.id === 'ImageFiles') {
+                    // If files are selected OR we have existing images backing us up, the field is valid
+                    if (this.files.length > 0 || hasExistingImages) {
+                        $(this).removeClass('is-invalid');
+                        imageErrorMsg.text('');
+                    } else {
+                        $(this).addClass('is-invalid');
+                        imageErrorMsg.text('This product currently has no images. Please upload at least one image.');
+                    }
+                } else {
+                    if (this.checkValidity()) {
+                        $(this).removeClass('is-invalid');
+                    } else {
+                        $(this).addClass('is-invalid');
+                    }
+                }
+
+                // Auto-clear global layout alert banner if all elements pass validity conditions
+                var totalImagePresence = hasExistingImages || imageInput[0].files.length > 0;
+                if (form[0].checkValidity() && totalImagePresence) {
+                    $('#validationSummaryAlert').fadeOut();
+                }
+            });
+        });
+    </script>
+}

@@ -1,28 +1,86 @@
 ﻿@model Shopv2.Models.Occasion
 @{
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    ViewData["Title"] = "Thêm mới Dịp Lễ";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Create New Occasion";
 }
 
 <section class="content pt-4">
     <div class="container-fluid">
         <div class="card card-primary">
             <div class="card-header">
-                <h3 class="card-title">Thêm mới Dịp Lễ</h3>
+                <h3 class="card-title">Add New Occasion</h3>
             </div>
-            <form asp-action="Create" method="post">
+
+            <form asp-action="Create" method="post" id="occasionForm" novalidate>
                 <div class="card-body">
+
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger alert-dismissible fade show" role="alert" style="display:none;" id="validationSummaryAlert">
+                        <i class="icon fas fa-exclamation-triangle"></i>
+                        Please fill in all required fields before saving.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
                     <div class="form-group">
-                        <label for="Name">Tên Dịp Lễ</label>
-                        <input type="text" asp-for="Name" class="form-control" id="Name" placeholder="Nhập tên dịp lễ (Ví dụ: Valentine)" required>
+                        <label for="Name">Occasion Name</label>
+                        <input type="text" asp-for="Name" class="form-control" id="Name" placeholder="Enter occasion name (e.g., Valentine's Day)" required>
+                        <span asp-validation-for="Name" class="text-danger text-sm"></span>
                     </div>
                 </div>
 
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Lưu lại</button>
-                    <a asp-action="Index" class="btn btn-default">Quay lại</a>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a asp-action="Index" class="btn btn-default">Back to List</a>
                 </div>
             </form>
         </div>
     </div>
 </section>
+
+@section Scripts {
+    <script src="~/admin/plugins/jquery-validation/jquery.validate.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var form = $('#occasionForm');
+
+            form.on('submit', function (e) {
+                var formElement = form[0];
+
+                // If input validation checks evaluate to false
+                if (!formElement.checkValidity()) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    $('#validationSummaryAlert').fadeIn();
+
+                    // Evaluate form controls and append error visual wrappers
+                    form.find('.form-control').each(function () {
+                        if (!this.checkValidity()) {
+                            $(this).addClass('is-invalid'); // Turns the input border red
+                        } else {
+                            $(this).removeClass('is-invalid');
+                        }
+                    });
+                }
+
+                form.addClass('was-validated');
+            });
+
+            // Real-time listener: strip red border formatting instantly as user types valid characters
+            form.find('.form-control').on('input change', function () {
+                if (this.checkValidity()) {
+                    $(this).removeClass('is-invalid');
+                } else {
+                    $(this).addClass('is-invalid');
+                }
+
+                // Hide top alert banner if the layout metrics satisfy system requirements
+                if (form[0].checkValidity()) {
+                    $('#validationSummaryAlert').fadeOut();
+                }
+            });
+        });
+    </script>
+}

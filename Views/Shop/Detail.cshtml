@@ -1,0 +1,63 @@
+﻿@model Shopv2.Models.Bouquet
+@using System.Globalization
+
+@{
+    ViewData["Title"] = Model.Name;
+    string PriceDisplay(decimal price) => price.ToString("C", CultureInfo.CurrentCulture);
+}
+
+<div class="container" style="padding: 40px 0;">
+    <div class="row">
+        <div class="col-md-6 col-12">
+            <div class="product-gallery">
+
+                <div class="main-image-box" style="border: 1px solid #eee; text-align:center; padding:10px; margin-bottom: 15px;">
+                    <img id="zoom-image" src="@ViewBag.MainImage" alt="@Model.Name" class="img-fluid" style="max-height: 450px; object-fit: cover; width: 100%;" />
+                </div>
+
+                <div class="image-thumbs-list d-flex flex-wrap" style="gap: 10px;">
+                    @if (ViewBag.AllImages != null)
+                    {
+                        var isFirst = true;
+                        foreach (string imgPath in ViewBag.AllImages)
+                        {
+                            <div class="thumb-item" style="width: 80px; height: 80px; border: 1px solid @(isFirst ? "#fe4c50" : "#eee"); cursor: pointer; padding: 2px;">
+                                <img src="@imgPath" class="img-fluid h-100 w-100" style="object-fit: cover;" onclick="changeImage(this.src, this)" />
+                            </div>
+                            isFirst = false;
+                        }
+                    }
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-md-6 col-12">
+            <div class="product-summary" style="padding-left: 20px;">
+                <h1 style="font-size: 30px; font-weight: bold; margin-bottom: 15px;">@Model.Name</h1>
+                <p><strong>Danh mục:</strong> @ViewBag.OccasionName</p>
+                <p style="font-size: 24px; color: #fe4c50; font-weight: bold;">@PriceDisplay(Model.Price)</p>
+                <hr />
+                <p style="color: #666; line-height: 1.6;">@Model.Description</p>
+                <hr />
+                <a asp-action="Index" class="btn btn-secondary">Quay lại cửa hàng</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function changeImage(src, element) {
+        // Thay ảnh lớn bằng ảnh vừa click
+        document.getElementById('zoom-image').src = src;
+
+        // Reset lại viền xám cho toàn bộ các ô ảnh nhỏ
+        var thumbs = document.querySelectorAll('.thumb-item');
+        thumbs.forEach(function(item) {
+            item.style.borderColor = '#eee';
+        });
+
+        // Tô viền đỏ cho ô ảnh nhỏ đang được chọn
+        element.parentElement.style.borderColor = '#fe4c50';
+    }
+</script>

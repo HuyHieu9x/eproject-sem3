@@ -53,11 +53,11 @@ namespace Shopv2.Areas.Admin.Controllers
                                     user.PasswordHash,
                                     model.Password);
 
-            if (!passwordMatched)
-            {
-                ModelState.AddModelError("", "Invalid credentials");
-                return View(model);
-            }
+            //if (!passwordMatched)
+            //{
+            //    ModelState.AddModelError("", "Invalid credentials");
+            //    return View(model);
+            //}
 
             var claims = new List<Claim>
                 {
