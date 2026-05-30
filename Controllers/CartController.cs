@@ -23,8 +23,9 @@ namespace Shopv2.Controllers
         {
             // lấy user login
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
 
-            if (userIdClaim == null)
+            if (userIdClaim == null || role != "Client")
             {
                 return Redirect("/login");
             }
@@ -92,7 +93,8 @@ namespace Shopv2.Controllers
         {
             // TEMP
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (userIdClaim == null)
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+            if (userIdClaim == null || role != "Client")
             {
                 return Redirect("/login");
             }

@@ -1,4 +1,29 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+@using Shopv2.Data
+
+@inject ApplicationDbContext _context
+
+@{
+	int cartCount = 0;
+
+	var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+	var role = User.FindFirst(ClaimTypes.Role)?.Value;
+
+	if (!string.IsNullOrEmpty(userIdClaim) && role == "Client")
+	{
+		int userId = int.Parse(userIdClaim);
+
+		var cart = _context.Carts.FirstOrDefault(x => x.UserId == userId);
+
+		if (cart != null)
+		{
+			cartCount = _context.CartItems
+				.Where(x => x.CartId == cart.Id)
+				.Sum(x => x.Quantity);
+		}
+	}
+}
+<!DOCTYPE html>
 <html lang="en-US">
 <!--<![endif]-->
 <!-- Mirrored from floomi.wpbingosite.com/ by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 16 May 2026 07:20:37 GMT -->
@@ -11,8 +36,8 @@
 	<title>Floomi &#8211; Flower Store WordPress Theme</title>
 	<meta name='robots' content='max-image-preview:large' />
 	<link rel='dns-prefetch' href='http://fonts.googleapis.com/' />
-	<link rel="alternate" type="application/rss+xml" title="Floomi &raquo; Feed" href="feed/index.html" />
-	<link rel="alternate" type="application/rss+xml" title="Floomi &raquo; Comments Feed" href="comments/feed/index.html" />
+	<link rel="alternate" type="application/rss+xml" title="Floomi &raquo; Feed" href="" />
+	<link rel="alternate" type="application/rss+xml" title="Floomi &raquo; Comments Feed" href="" />
 	<link rel="alternate" title="oEmbed (JSON)" type="application/json+oembed" href="~/client/wp-json/oembed/1.0/embed915d.json?url=https%3A%2F%2Ffloomi.wpbingosite.com%2F" />
 	<link rel="alternate" title="oEmbed (XML)" type="text/xml+oembed" href="~/client/wp-json/oembed/1.0/embed4ddf?url=https%3A%2F%2Ffloomi.wpbingosite.com%2F&amp;format=xml" />
 	<style id='wp-img-auto-sizes-contain-inline-css' type='text/css'>
@@ -711,7 +736,7 @@
 								<div class="bwp-builder-item bwp-component-logo" data-component-id="logo">
 									<div class="site-branding">
 										<div class="wpbingoLogo">
-											<a href="index.html">
+											<a href="">
 												<img src="~/client/wp-content/themes/floomi/assets/images/logo/logo.svg" alt="Floomi" class="default-logo" />
 												<img src="~/client/wp-content/themes/floomi/assets/images/logo/logo.svg" alt="Floomi" class="sticky-logo" />
 											</a>
@@ -744,7 +769,7 @@
 																	</ul> *@
 																</li>
 																<li class="level-0 menu-item-45125  menu-item-has-children    menu-item menu-item-type-post_type menu-item-object-page  mega-menu mega-menu-custom-width     " style="--megamenu-width:1000px;">
-																	<a href="/bouquets"><span class="menu-item-text">Bouquets</span></a><span tabindex=0 class="dropdown-symbol"></span>
+																	<a href="/shop"><span class="menu-item-text">Shop</span></a><span tabindex=0 class="dropdown-symbol"></span>
 																	@* <div class="sub-menu">
 																		<div data-elementor-type="wp-post" data-elementor-id="9121" class="elementor elementor-9121">
 																			<div class="elementor-element elementor-element-f3ba6ef content-megamenu e-flex e-con-boxed e-con e-parent" data-id="f3ba6ef" data-element_type="container">
@@ -1049,7 +1074,7 @@
 																	</div> *@
 																</li>
 																<li class="level-0 menu-item-45125  menu-item-has-children    menu-item menu-item-type-post_type menu-item-object-page  mega-menu mega-menu-custom-width      ">
-																	<a href="/orders"><span class="menu-item-text">Orders</span></a><span tabindex=0 class="dropdown-symbol"></span>
+																	<a href="/order"><span class="menu-item-text">Order</span></a><span tabindex=0 class="dropdown-symbol"></span>
 																	@* <ul class="sub-menu">
 																		<li class="level-1 menu-item-61344      menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home  std-menu      "><a href="index.html">Home 1</a></li>
 																		<li class="level-1 menu-item-61345      menu-item menu-item-type-custom menu-item-object-custom  std-menu      "><a href="home-2/index.html">Home 2</a></li>
@@ -1635,8 +1660,7 @@
 
 
 							<div class="bwp-column bwp-column-3 horizontal-end">
-								<div class="" data-component-id="search_icon" style="    min-width: 250px;
-    font-weight: 600;">
+								<div class="" data-component-id="search_icon" style="    min-width: 320px; font-weight: 600;">
 									@if (User.Identity != null && User.Identity.IsAuthenticated)
 									{
 										<span>
@@ -1645,7 +1669,7 @@
 										<form asp-controller="Home"
 											  asp-action="Logout"
 											  method="post"
-											  style="display:inline-block;">
+											  style="display:inline-block;    margin-left: 10px;">
 											<button type="submit" class="btn-logout-link">
 												Logout
 											</button>
@@ -1772,7 +1796,7 @@
 
 									</div>
 								</div>
-								<div class="bwp-builder-item bwp-component-wishlist-icon" data-component-id="wishlist_icon">
+								@* <div class="bwp-builder-item bwp-component-wishlist-icon" data-component-id="wishlist_icon">
 									<div class="wishlist-box">
 										<a href="wishlist/index.html">
 											<span class="bwp-svg-icon">
@@ -1782,7 +1806,7 @@
 											</span>
 										</a>
 									</div>
-								</div>
+								</div> *@
 
 
 								<div class="bwp-builder-item bwp-component-wishlist-icon" data-component-id="wishlist_icon">
@@ -1791,7 +1815,7 @@
 											<span class="bwp-svg-icon">
 												<svg width="18" height="22" viewBox="0 0 18 22" fill="none" xmlns="http://www.w3.org/2000/svg">
 													<path d="M17.9895 21.0812L16.6661 6.17252C16.63 5.76537 16.2927 5.45352 15.8887 5.45352H13.1596V4.2084C13.1596 1.88789 11.2935 0 8.99969 0C6.706 0 4.84008 1.88789 4.84008 4.2084V5.45352H2.10915C1.70512 5.45352 1.3678 5.76537 1.33169 6.17252L0.00312121 21.1398C-0.0164456 21.3607 0.0566176 21.5796 0.204513 21.7432C0.352409 21.9068 0.561504 22 0.780589 22H17.2173C17.218 22 17.2188 22 17.2194 22C17.6506 22 18 21.6464 18 21.2104C17.9999 21.1664 17.9964 21.1232 17.9895 21.0812ZM6.40126 4.2084C6.40126 2.75871 7.56694 1.57929 8.99979 1.57929C10.4327 1.57929 11.5985 2.75871 11.5985 4.2084V5.45352H6.40126V4.2084ZM1.63445 20.4208L2.82282 7.03281H4.84008V8.44491C4.84008 8.88101 5.18947 9.23456 5.62067 9.23456C6.05187 9.23456 6.40126 8.88101 6.40126 8.44491V7.03281H11.5985V8.44491C11.5985 8.88101 11.9479 9.23456 12.3791 9.23456C12.8103 9.23456 13.1597 8.88101 13.1597 8.44491V7.03281H15.1751L16.3635 20.4208H1.63445Z" fill="black" />
-												</svg>                          <span class="count-wishlist">0</span>
+												</svg>                          <span class="count-wishlist">@cartCount</span>
 											</span>
 										</a>
 									</div>
@@ -1934,10 +1958,10 @@
 
 
 
-								<div class="bwp-builder-item bwp-component-logo" data-component-id="logo">
+								<div class="bwp-builder-item bwp-component-logo" data-component-id="">
 									<div class="site-branding">
 										<div class="wpbingoLogo">
-											<a href="index.html">
+											<a href="/">
 												<img src="~/client/wp-content/themes/floomi/assets/images/logo/logo.svg" alt="Floomi" class="default-logo" />
 												<img src="~/client/wp-content/themes/floomi/assets/images/logo/logo.svg" alt="Floomi" class="sticky-logo" />
 											</a>

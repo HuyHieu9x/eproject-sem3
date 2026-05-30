@@ -95,7 +95,7 @@ namespace Shopv2.Controllers
 
             if (user == null)
             {
-                ModelState.AddModelError("", "Tài khoản hoặc mật khẩu không đúng");
+                ModelState.AddModelError("", "Username or Password incorrect");
                 return View(model);
             }
 

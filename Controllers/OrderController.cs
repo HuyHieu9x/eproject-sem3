@@ -22,8 +22,8 @@ namespace Shopv2.Controllers
         public IActionResult Index()
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            if (userIdClaim == null)
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+            if (userIdClaim == null || role != "Client")
             {
                 return Redirect("/login");
             }
