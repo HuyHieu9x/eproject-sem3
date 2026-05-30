@@ -19,7 +19,7 @@ namespace Shopv2.Controllers
         }
 
         [HttpGet("")]
-        public IActionResult Index()
+        public IActionResult Index(int page = 1 )
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var role = User.FindFirst(ClaimTypes.Role)?.Value;
@@ -27,10 +27,22 @@ namespace Shopv2.Controllers
             {
                 return Redirect("/login");
             }
-
+            int pageSize = 10;
             int userId = int.Parse(userIdClaim);
-            List<Order> orders = _context.Orders.Where(ord => ord.UserId == userId).OrderByDescending(ord => ord.Status).ToList();
-            return View(orders);
+            page = Math.Max(1, page);
+            pageSize = Math.Max(1, pageSize);
+            List<Order> orders = _context.Orders
+                                         .Where(ord => ord.UserId == userId)
+                                         .OrderByDescending(ord => ord.Status)
+                                         .Skip((page - 1) * pageSize)
+                                         .Take(pageSize)
+                                         .ToList();
+            OrderViewModel orderViewModel = new OrderViewModel();
+            orderViewModel.orders = orders;
+            orderViewModel.CurrentPage = page;
+            int totalCnt = _context.Orders.Where(ord => ord.UserId == userId).Count();
+            orderViewModel.TotalPages = (int)Math.Ceiling(totalCnt / (double)pageSize);
+            return View(orderViewModel);
         }
 
         [HttpGet("detail/{id}")]

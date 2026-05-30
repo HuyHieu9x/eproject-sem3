@@ -1,4 +1,4 @@
-﻿@model List<Shopv2.Models.Order>
+﻿@model Shopv2.Models.ViewModels.OrderViewModel
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
@@ -96,7 +96,7 @@
 					Order
 				</h1>
 			</div><!-- Page Title -->
-			<div id="breadcrumb" class="breadcrumb"><div class="bwp-breadcrumb"><a href="../index.html">Home</a> <span class="delimiter">/</span> <span class="current">Order</span> </div></div>
+            <div id="breadcrumb" class="breadcrumb"><div class="bwp-breadcrumb"> <a asp-action="Index">Order</a> <span class="delimiter"></div></div>
 		</div>
 	</div><!-- .container -->
 	<div class="container">
@@ -111,7 +111,7 @@
 
                                         <h2>Order List</h2>
 
-                                        @if (!Model.Any())
+                                        @if (!Model.orders.Any())
                                         {
                                             <div class="alert alert-warning">
                                                 Order list is empty
@@ -140,7 +140,7 @@
                                                         int no = 1;
                                                     }
 
-                                                    @foreach (var order in Model)
+                                                    @foreach (var order in Model.orders)
                                                     {
                                                         <tr class="text-center">
 
@@ -191,7 +191,51 @@
 
                                             </table>
                                         }
+                                        @if (Model.TotalPages >= 1){
+                                        <nav class="woocommerce-pagination">
+                                            <ul class="page-numbers d-flex justify-content-center list-unstyled">
 
+                                                <li>
+                                                    @if (Model.CurrentPage > 1)
+                                                    {
+                                                        <a class="prev page-numbers" href="@Url.Action("Index", "Order", new { page = Model.CurrentPage - 1 })">Prev</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="prev page-numbers disabled" style="color: #ccc; cursor: not-allowed; pointer-events: none;">Prev</span>
+                                                    }
+                                                </li>
+
+                                                @for (var i = 1; i <= Model.TotalPages; i++)
+                                                {
+                                                    if (i == Model.CurrentPage)
+                                                    {
+                                                        <li>
+                                                            <span aria-label="Page @i" aria-current="page" class="page-numbers current">@i</span>
+                                                        </li>
+                                                    }
+                                                    else
+                                                    {
+                                                        <li>
+                                                            <a aria-label="Page @i" class="page-numbers" href="@Url.Action("Index", "Order", new { page = i})">@i</a>
+                                                        </li>
+                                                    }
+                                                }
+
+                                                <li>
+                                                    @if (Model.CurrentPage < Model.TotalPages)
+                                                    {
+                                                        <a class="next page-numbers" href="@Url.Action("Index", "Order", new { page = Model.CurrentPage + 1 })">Next</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="next page-numbers disabled" style="color: #ccc; cursor: not-allowed; pointer-events: none;">Next</span>
+                                                    }
+                                                </li>
+
+                                            </ul>
+                                        </nav>
+                                        }
                                     </div>
 								</div><!-- .entry-content -->
 							</article><!-- #post-## -->

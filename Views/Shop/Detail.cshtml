@@ -5,6 +5,48 @@
     ViewData["Title"] = Model.Name;
     string PriceDisplay(decimal price) => price.ToString("C", CultureInfo.CurrentCulture);
 }
+<style>
+    .account-banner {
+        background-image: url('/client/wp-content/themes/floomi/assets/images/bg-breadcrumb.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        padding: 120px 0;
+        position: relative;
+    }
+
+        .account-banner::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.35);
+        }
+
+        .account-banner .container {
+            position: relative;
+            z-index: 2;
+        }
+
+    .content-title-heading {
+        margin-bottom: 15px;
+    }
+
+    .text-title-heading {
+        color: #fff;
+        font-size: 52px;
+        font-weight: 700;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    #breadcrumb,
+    #breadcrumb a,
+    #breadcrumb .current {
+        color: #fff;
+        font-size: 16px;
+        text-align: center;
+    }
+</style>
 
 <div id="main-content" class="main-content">
     <div id="primary" class="content-area container">
@@ -20,7 +62,7 @@
                                 </div>
                                 <div id="breadcrumb" class="breadcrumb">
                                     <div class="bwp-breadcrumb">
-                                        <a href="/">Home</a> <span class="delimiter">/</span> <span class="current">Detail</span>
+                                        <a href="/">Shop</a> <span class="delimiter">/</span> <span class="current">Detail</span>
                                     </div>
                                 </div>
                             </div>
@@ -41,7 +83,7 @@
                                                 foreach (string imgPath in ViewBag.AllImages)
                                                 {
                                                     <div class="thumb-item" style="width: 80px; height: 80px; border: 1px solid @(isFirst ? "#111" : "#eee"); cursor: pointer; padding: 2px; border-radius: 4px; transition: border-color 0.2s;">
-                                                        <img src="@imgPath" class="img-fluid h-100 w-100" style="object-fit: cover; border-radius: 2px;" onclick="changeImage(this.src, this)" />
+                                                        <img src="@imgPath" class="img-fluid h-100 w-100" style="object-fit: cover; border-radius: 2px;height:100%" onclick="changeImage(this.src, this)" />
                                                     </div>
                                                     isFirst = false;
                                                 }
@@ -55,7 +97,7 @@
                                         <h1 style="font-size: 40px; font-weight: bold; margin-bottom: 10px; color: #222;">@Model.Name</h1>
 
                                         <p style="font-size: 14px; color: #777; margin-bottom: 15px;">
-                                            <strong style="color: #333;">Category:</strong> @ViewBag.OccasionName
+                                            <strong style="color: #333;">Occasion: </strong> @ViewBag.OccasionName
                                         </p>
 
                                         <p style="font-size: 28px; color: #b89e2e; font-weight: bold; margin-bottom: 25px;">@PriceDisplay(Model.Price)</p>
@@ -82,7 +124,7 @@
 
                                         <hr />
 
-                                        <div class="product-description-box" style="background-color: #f9f9f9; border-left: 3px solid #111; padding: 20px; border-radius: 0 8px 8px 0; margin: 25px 0;">
+                                        <div class="product-description-box" style="background-color: #f9f9f9; border-left: 3px solid #111; padding: 10px 20px; border-radius: 0 8px 8px 0; margin: 25px 0;">
                                             <h5 style="font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; color: #333;">
                                                 <i class="icon-file-text mr-2" style="color: #b89e2e;"></i> Description
                                             </h5>
