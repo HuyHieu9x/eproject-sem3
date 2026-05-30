@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Shopv2.Controllers
 {
+    [Route("shop")]
     public class ShopController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -16,7 +17,7 @@ namespace Shopv2.Controllers
         {
             _context = context;
         }
-
+        [HttpGet("")]
         public IActionResult Index(int? occasionId, int page = 1, int pageSize = 10)
         {
             page = Math.Max(1, page);
@@ -52,7 +53,7 @@ namespace Shopv2.Controllers
 
             return View(viewModel);
         }
-
+        [HttpGet("detail/{id}")]
         public IActionResult Detail(int id)
         {
             // 1. Lấy sản phẩm dựa theo Id

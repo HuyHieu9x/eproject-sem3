@@ -10,7 +10,6 @@ using System.Security.Claims;
 namespace Shopv2.Controllers
 {
     [Route("order")]
-    [Authorize(Roles = "Client")]
     public class OrderController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -22,7 +21,14 @@ namespace Shopv2.Controllers
         [HttpGet("")]
         public IActionResult Index()
         {
-            int userId = int.Parse(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userIdClaim == null)
+            {
+                return Redirect("/login");
+            }
+
+            int userId = int.Parse(userIdClaim);
             List<Order> orders = _context.Orders.Where(ord => ord.UserId == userId).OrderByDescending(ord => ord.Status).ToList();
             return View(orders);
         }

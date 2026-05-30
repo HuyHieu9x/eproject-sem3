@@ -101,9 +101,12 @@ namespace Shopv2.Controllers
             var cart = _context.Carts
                 .FirstOrDefault(x => x.UserId == userId);
 
+            CartViewModel cartViewModel = new CartViewModel();
+            cartViewModel.cartId = -1;
+            cartViewModel.cartItemsView = new List<CartItemViewModel>();
             if (cart == null)
             {
-                return View(new List<CartItemViewModel>());
+                return View(cartViewModel);
             }
 
             var cartItems = (from ci in _context.CartItems
@@ -121,7 +124,7 @@ namespace Shopv2.Controllers
                                  Quantity = ci.Quantity
                              }).ToList();
 
-            CartViewModel cartViewModel = new CartViewModel();
+            
             cartViewModel.cartId = cart.Id;
             cartViewModel.cartItemsView = cartItems;
 
