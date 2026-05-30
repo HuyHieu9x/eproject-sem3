@@ -2,6 +2,9 @@
     ViewData["Title"] = "Home Page";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+@using System.Linq
+@model IEnumerable<Shopv2.Models.Bouquet>
 <style>
 	.account-banner {
 		background-image: url('/client/wp-content/themes/floomi/assets/images/bg-breadcrumb.jpg');
@@ -1807,462 +1810,102 @@
 											<div id="bwp_default_16381054421778916037" class="bwp-product-list carousel">
 												<div class="bwp-swiper-slider swiper swiper-container-arrows-hover-show swiper-container-wrap-dots-outside" data-swiper-id="557b022" data-slider-settings='{&quot;speed&quot;:500,&quot;slides_per_view&quot;:4,&quot;slides_to_scroll&quot;:1,&quot;space_between&quot;:30,&quot;auto_height&quot;:true,&quot;loop&quot;:&quot;yes&quot;,&quot;pagination&quot;:&quot;bullets&quot;,&quot;show_arrows&quot;:true,&quot;slides_per_view_mobile&quot;:2,&quot;slides_to_scroll_mobile&quot;:1,&quot;space_between_mobile&quot;:15,&quot;slides_per_view_tablet&quot;:3,&quot;slides_to_scroll_tablet&quot;:1,&quot;space_between_tablet&quot;:15,&quot;slides_per_view_tablet_extra&quot;:4,&quot;slides_to_scroll_tablet_extra&quot;:1,&quot;space_between_tablet_extra&quot;:15}'>
 													<div id="swiper-wrapper-6a081ac58dda6" class="swiper-wrapper products-list grid">
-														<div class="swiper-slide item-product">
-															<div class="products-entry content-product4 clearfix product-wapper">
-																<div class="products-thumb">
-																	<div class='product-lable'>
-																		<div class="vgwc-label vgwc-featured hot">Hot</div>
-																		<div class="onsale">20%</div>
-																	</div>
-																	<div class="product-thumb-img"><div class="product-thumb-hover"><a href="shop/the-mauve-garden/index.html" class="woocommerce-LoopProduct-link"><img decoding="async" width="600" height="750" src="~/client/wp-content/uploads/2025/09/product-51-600x750.jpg" class="fade-in lazyload wp-post-image" alt="" loading="eager" /><img decoding="async" width="600" height="750" src="~/client/wp-content/uploads/2025/09/product-52-600x750.jpg" class="hover-image back" alt="" loading="eager" /></a></div></div>		<div class="product-button tooltip">
-																		<span class="product-quickview" data-title="Quick View"><a href="#" data-product_id="3989" class="quickview quickview-button quickview-3989"><span>Quick View</span></a></span><div class="woosw-wishlist" data-title="Wishlist"><button class="woosw-btn woosw-btn-3989" data-id="3989">Add to wishlist</button></div><div class="woosc-compare" data-title="Compare"><button class="woosc-btn woosc-btn-3989 " data-id="3989">Compare</button></div>
-																	</div>
-																	<div class="btn-atc hidden-md hidden-sm hidden-xs">
-																		<div class="type_simple" data-title="Add to cart"><a rel="nofollow" href="index49a6.html?add-to-cart=3989" data-quantity="1" data-product_id="3989" data-product_sku="VN00189" class="button product_type_simple add_to_cart_button ajax_add_to_cart"><span>Add to cart</span></a></div>
-																	</div>
-																	<div class="product-button-mobile">
-																		<div class="woosw-wishlist" data-title="Wishlist"><button class="woosw-btn woosw-btn-3989" data-id="3989">Add to wishlist</button></div>			<span class="product-quickview" data-title="Quick View"><a href="#" data-product_id="3989" class="quickview quickview-button quickview-3989"><span>Quick View</span></a></span>
-																	</div>
-																</div>
-																<div class="products-content">
-																	<div class="contents">
-																		<h3 class="product-title"><a href="shop/the-mauve-garden/index.html">The Mauve Garden</a></h3>
 
-																		<span class="price"><del aria-hidden="true"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#36;</span>150.00</bdi></span></del> <span class="screen-reader-text">Original price was: &#036;150.00.</span><ins aria-hidden="true"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#36;</span>120.00</bdi></span></ins><span class="screen-reader-text">Current price is: &#036;120.00.</span></span>
-																		<div class="reviews-wrap">
-																			<div class="rating">
+														@if (Model != null && Model.Any())
+														{
+															foreach (var bouquet in Model)
+															{
+																// Mặc định ban đầu nếu không có ảnh
+																var img1 = "/images/default-flower.jpg";
+																var img2 = "/images/default-flower.jpg";
 
-																				<div class="star-rating" role="img" aria-label="Rated 4.00 out of 5">
-																					<span class="max-rating rating-stars">
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																					</span>
-																					<span class="user-rating rating-stars" style="--rating-fill-width:80%">
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																					</span>
-																					<span class="screen-reader-text">
-																						Rated <strong class="rating">4.00</strong> out of 5 based on <span class="rating">1</span> ratings
-																					</span>
+																if (!string.IsNullOrEmpty(bouquet.ImageUrl))
+																{
+																	// Tách chuỗi ảnh bằng dấu phẩy để tạo thành một mảng các đường dẫn ảnh
+																	string[] imageList = bouquet.ImageUrl.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+																	if (imageList.Length > 0)
+																	{
+																		// Lấy ảnh đầu tiên làm ảnh hiển thị chính (bỏ các khoảng trắng thừa nếu có bằng .Trim())
+																		img1 = imageList[0].Trim();
+
+																		// Mặc định ảnh hover sẽ giống ảnh 1
+																		img2 = img1;
+																	}
+
+																	if (imageList.Length > 1)
+																	{
+																		// Nếu sản phẩm có từ 2 ảnh trở lên, lấy luôn ảnh thứ hai làm ảnh hover!
+																		img2 = imageList[1].Trim();
+																	}
+																}
+
+																<div class="swiper-slide item-product">
+																	<div class="products-entry content-product4 clearfix product-wapper">
+																		<div class="products-thumb">
+																			<div class="product-thumb-img">
+																				<div class="product-thumb-hover">
+																					<a href="/bouquet/detail/@bouquet.Id" class="woocommerce-LoopProduct-link">
+																						<img decoding="async"
+																							 src="@img1"
+																							 class="fade-in lazyload wp-post-image"
+																							 alt="@bouquet.Name"
+																							 loading="eager"
+																							 style="width: 100%; height: 300px; object-fit: cover;" />
+
+																						<img decoding="async"
+																							 src="@img2"
+																							 class="hover-image back"
+																							 alt="@bouquet.Name"
+																							 loading="eager"
+																							 style="width: 100%; height: 300px; object-fit: cover;" />
+																					</a>
 																				</div>
+																			</div>
 
-																				<div class="review-count">(1)</div>
+																			<div class="product-button tooltip">
+																				<span class="product-quickview" data-title="Quick View">
+																					<span class="product-quickview" data-title="View">
+																						<a asp-controller="Shop" asp-action="Detail" asp-route-id="@bouquet.Id" class="">
+																							<span> View</span>
+																						</a>
+																					</span>
+																				</span>
+																				
+
+																			</div>
+
+																			<div class="btn-atc hidden-md hidden-sm hidden-xs">
+																				<div class="type_simple" data-title="Add to cart">
+																					<a rel="nofollow" href="/cart/add?id=@bouquet.Id" data-quantity="1" data-product_id="@bouquet.Id" class="button product_type_simple add_to_cart_button ajax_add_to_cart"><span>Add to cart</span></a>
+																				</div>
+																			</div>
+																		</div>
+
+																		<div class="products-content">
+																			<div class="contents">
+																				<h3 class="product-title">
+																					<a href="/bouquet/detail/@bouquet.Id">@bouquet.Name</a>
+																				</h3>
+
+																				<span class="price">
+																					<ins aria-hidden="true">
+																						<span class="woocommerce-Price-amount amount">
+																							<bdi><span class="woocommerce-Price-currencySymbol">&#36;</span>@bouquet.Price.ToString("0.00")</bdi>
+																						</span>
+																					</ins>
+																				</span>
 																			</div>
 																		</div>
 																	</div>
 																</div>
-															</div>
-														</div>
-														<div class="swiper-slide item-product">
-															<div class="products-entry content-product4 clearfix product-wapper">
-																<div class="products-thumb">
-																	<div class='product-lable'>
-
-																		<div class="onsale">17%</div>
-																	</div>
-																	<div class="product-thumb-img"><div class="product-thumb-hover"><a href="shop/the-caviar-creme/index.html" class="woocommerce-LoopProduct-link"><img decoding="async" width="600" height="750" src="~/client/wp-content/uploads/2025/09/product-47-600x750.jpg" class="fade-in lazyload wp-post-image" alt="" loading="eager" /><img decoding="async" width="600" height="750" src="~/client/wp-content/uploads/2025/09/product-48-600x750.jpg" class="hover-image back" alt="" loading="eager" /></a></div></div>		<div class="product-button tooltip">
-																		<span class="product-quickview" data-title="Quick View"><a href="#" data-product_id="1061" class="quickview quickview-button quickview-1061"><span>Quick View</span></a></span><div class="woosw-wishlist" data-title="Wishlist"><button class="woosw-btn woosw-btn-1061" data-id="1061">Add to wishlist</button></div><div class="woosc-compare" data-title="Compare"><button class="woosc-btn woosc-btn-1061 " data-id="1061">Compare</button></div>
-																	</div>
-																	<div class="btn-atc hidden-md hidden-sm hidden-xs">
-																		<div class="type_simple" data-title="Add to cart"><a rel="nofollow" href="indexfecd.html?add-to-cart=1061" data-quantity="1" data-product_id="1061" data-product_sku="" class="button product_type_simple add_to_cart_button ajax_add_to_cart"><span>Add to cart</span></a></div>
-																	</div>
-																	<div class="product-button-mobile">
-																		<div class="woosw-wishlist" data-title="Wishlist"><button class="woosw-btn woosw-btn-1061" data-id="1061">Add to wishlist</button></div>			<span class="product-quickview" data-title="Quick View"><a href="#" data-product_id="1061" class="quickview quickview-button quickview-1061"><span>Quick View</span></a></span>
-																	</div>
-																</div>
-																<div class="products-content">
-																	<div class="contents">
-																		<h3 class="product-title"><a href="shop/the-caviar-creme/index.html">The Caviar &amp; Creme</a></h3>
-
-																		<span class="price"><del aria-hidden="true"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#36;</span>120.00</bdi></span></del> <span class="screen-reader-text">Original price was: &#036;120.00.</span><ins aria-hidden="true"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#36;</span>100.00</bdi></span></ins><span class="screen-reader-text">Current price is: &#036;100.00.</span></span>
-																		<div class="reviews-wrap">
-																			<div class="rating">
-
-																				<div class="star-rating" role="img" aria-label="Rated 0.00 out of 5">
-																					<span class="max-rating rating-stars">
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																					</span>
-																					<span class="user-rating rating-stars" style="--rating-fill-width:0%">
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																					</span>
-																					<span class="screen-reader-text">
-																						Rated <strong class="rating">0.00</strong> out of 5 based on <span class="rating">0</span> ratings
-																					</span>
-																				</div>
-
-																				<div class="review-count">(0)</div>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</div>
-														<div class="swiper-slide item-product">
-															<div class="products-entry content-product4 clearfix product-wapper">
-																<div class="products-thumb">
-																	<div class='product-lable'>
-																	</div>
-																	<div class="product-thumb-img"><div class="product-thumb-hover"><a href="shop/the-crisp-morning/index.html" class="woocommerce-LoopProduct-link"><img decoding="async" width="600" height="750" src="~/client/wp-content/uploads/2025/09/product-53-600x750.jpg" class="fade-in lazyload wp-post-image" alt="" loading="eager" /><img decoding="async" width="600" height="750" src="~/client/wp-content/uploads/2025/09/product-54-600x750.jpg" class="hover-image back" alt="" loading="eager" /></a></div></div>		<div class="product-button tooltip">
-																		<span class="product-quickview" data-title="Quick View"><a href="#" data-product_id="67582" class="quickview quickview-button quickview-67582"><span>Quick View</span></a></span><div class="woosw-wishlist" data-title="Wishlist"><button class="woosw-btn woosw-btn-67582" data-id="67582">Add to wishlist</button></div><div class="woosc-compare" data-title="Compare"><button class="woosc-btn woosc-btn-67582 " data-id="67582">Compare</button></div>
-																	</div>
-																	<div class="btn-atc hidden-md hidden-sm hidden-xs">
-																		<div class="type_simple" data-title="Add to cart"><a rel="nofollow" href="index09d4.html?add-to-cart=67582" data-quantity="1" data-product_id="67582" data-product_sku="D101" class="button product_type_simple add_to_cart_button ajax_add_to_cart"><span>Add to cart</span></a></div>
-																	</div>
-																	<div class="product-button-mobile">
-																		<div class="woosw-wishlist" data-title="Wishlist"><button class="woosw-btn woosw-btn-67582" data-id="67582">Add to wishlist</button></div>			<span class="product-quickview" data-title="Quick View"><a href="#" data-product_id="67582" class="quickview quickview-button quickview-67582"><span>Quick View</span></a></span>
-																	</div>
-																</div>
-																<div class="products-content">
-																	<div class="contents">
-																		<h3 class="product-title"><a href="shop/the-crisp-morning/index.html">The Crisp Morning</a></h3>
-
-																		<span class="price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#36;</span>90.00</bdi></span></span>
-																		<div class="reviews-wrap">
-																			<div class="rating">
-
-																				<div class="star-rating" role="img" aria-label="Rated 0.00 out of 5">
-																					<span class="max-rating rating-stars">
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																					</span>
-																					<span class="user-rating rating-stars" style="--rating-fill-width:0%">
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																					</span>
-																					<span class="screen-reader-text">
-																						Rated <strong class="rating">0.00</strong> out of 5 based on <span class="rating">0</span> ratings
-																					</span>
-																				</div>
-
-																				<div class="review-count">(0)</div>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</div>
-														<div class="swiper-slide item-product">
-															<div class="products-entry content-product4 clearfix product-wapper">
-																<div class="products-thumb">
-																	<div class='product-lable'>
-
-																		<div class="onsale"></div>
-																	</div>
-																	<div class="product-thumb-img"><div class="product-thumb-hover"><a href="shop/the-sugar-plum/index.html" class="woocommerce-LoopProduct-link"><img decoding="async" width="600" height="750" src="~/client/wp-content/uploads/2020/12/product-19-600x750.jpg" class="fade-in lazyload wp-post-image" alt="" loading="eager" /><img decoding="async" width="600" height="750" src="~/client/wp-content/uploads/2020/12/product-20-600x750.jpg" class="hover-image back" alt="" loading="eager" /></a></div></div>		<div class="product-button tooltip">
-																		<span class="product-quickview" data-title="Quick View"><a href="#" data-product_id="16312" class="quickview quickview-button quickview-16312"><span>Quick View</span></a></span><div class="woosw-wishlist" data-title="Wishlist"><button class="woosw-btn woosw-btn-16312" data-id="16312">Add to wishlist</button></div><div class="woosc-compare" data-title="Compare"><button class="woosc-btn woosc-btn-16312 " data-id="16312">Compare</button></div>
-																	</div>
-																	<div class="btn-atc hidden-md hidden-sm hidden-xs">
-																		<div class="type_grouped" data-title="View products"><a rel="nofollow" href="shop/the-sugar-plum/index.html" data-quantity="1" data-product_id="16312" data-product_sku="D1110" class="button product_type_grouped read_more"><span>View products</span></a></div>
-																	</div>
-																	<div class="product-button-mobile">
-																		<div class="woosw-wishlist" data-title="Wishlist"><button class="woosw-btn woosw-btn-16312" data-id="16312">Add to wishlist</button></div>			<span class="product-quickview" data-title="Quick View"><a href="#" data-product_id="16312" class="quickview quickview-button quickview-16312"><span>Quick View</span></a></span>
-																	</div>
-																</div>
-																<div class="products-content">
-																	<div class="contents">
-																		<h3 class="product-title"><a href="shop/the-sugar-plum/index.html">The Sugar Plum</a></h3>
-
-																		<span class="price"><span class="woocommerce-Price-amount amount" aria-hidden="true"><bdi><span class="woocommerce-Price-currencySymbol">&#36;</span>50.00</bdi></span> <span aria-hidden="true">&ndash;</span> <span class="woocommerce-Price-amount amount" aria-hidden="true"><bdi><span class="woocommerce-Price-currencySymbol">&#36;</span>120.00</bdi></span><span class="screen-reader-text">Price range: &#36;50.00 through &#36;120.00</span></span>
-																		<div class="reviews-wrap">
-																			<div class="rating">
-
-																				<div class="star-rating" role="img" aria-label="Rated 3.33 out of 5">
-																					<span class="max-rating rating-stars">
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																					</span>
-																					<span class="user-rating rating-stars" style="--rating-fill-width:66.6%">
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																					</span>
-																					<span class="screen-reader-text">
-																						Rated <strong class="rating">3.33</strong> out of 5 based on <span class="rating">3</span> ratings
-																					</span>
-																				</div>
-
-																				<div class="review-count">(3)</div>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</div>
-														<div class="swiper-slide item-product">
-															<div class="products-entry content-product4 clearfix product-wapper">
-																<div class="products-thumb">
-																	<div class='product-lable'>
-																	</div>
-																	<div class="product-thumb-img"><div class="product-thumb-hover"><a href="shop/the-night-before/index.html" class="woocommerce-LoopProduct-link"><img decoding="async" width="600" height="750" src="~/client/wp-content/uploads/2020/12/product-1-600x750.jpg" class="fade-in lazyload wp-post-image" alt="" loading="eager" /><img decoding="async" width="600" height="750" src="~/client/wp-content/uploads/2020/12/product-2-600x750.jpg" class="hover-image back" alt="" loading="eager" /></a></div></div>		<div class="product-button tooltip">
-																		<span class="product-quickview" data-title="Quick View"><a href="#" data-product_id="16313" class="quickview quickview-button quickview-16313"><span>Quick View</span></a></span><div class="woosw-wishlist" data-title="Wishlist"><button class="woosw-btn woosw-btn-16313" data-id="16313">Add to wishlist</button></div><div class="woosc-compare" data-title="Compare"><button class="woosc-btn woosc-btn-16313 " data-id="16313">Compare</button></div>
-																	</div>
-																	<div class="btn-atc hidden-md hidden-sm hidden-xs">
-																		<div class="type_simple" data-title="Add to cart"><a rel="nofollow" href="index529a.html?add-to-cart=16313" data-quantity="1" data-product_id="16313" data-product_sku="D1111" class="button product_type_simple add_to_cart_button ajax_add_to_cart"><span>Add to cart</span></a></div>
-																	</div>
-																	<div class="product-button-mobile">
-																		<div class="woosw-wishlist" data-title="Wishlist"><button class="woosw-btn woosw-btn-16313" data-id="16313">Add to wishlist</button></div>			<span class="product-quickview" data-title="Quick View"><a href="#" data-product_id="16313" class="quickview quickview-button quickview-16313"><span>Quick View</span></a></span>
-																	</div>
-																</div>
-																<div class="products-content">
-																	<div class="contents">
-																		<h3 class="product-title"><a href="shop/the-night-before/index.html">The Night Before</a></h3>
-
-																		<span class="price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#36;</span>50.00</bdi></span></span>
-																		<div class="reviews-wrap">
-																			<div class="rating">
-
-																				<div class="star-rating" role="img" aria-label="Rated 0.00 out of 5">
-																					<span class="max-rating rating-stars">
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																					</span>
-																					<span class="user-rating rating-stars" style="--rating-fill-width:0%">
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																						<span class="bwp-svg-icon">
-																							<svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-																								<path d="M13.4648 4.88886C13.3764 4.6155 13.1339 4.42135 12.8471 4.39549L8.95063 4.04169L7.40987 0.435378C7.29626 0.171082 7.03753 0 6.75005 0C6.46258 0 6.20385 0.171082 6.09024 0.435996L4.54948 4.04169L0.652396 4.39549C0.366058 4.42196 0.124215 4.6155 0.035327 4.88886C-0.0535613 5.16222 0.0285291 5.46205 0.245137 5.65105L3.1904 8.23407L2.32191 12.0598C2.25836 12.3411 2.36754 12.6318 2.60094 12.8005C2.72639 12.8912 2.87316 12.9373 3.02117 12.9373C3.14879 12.9373 3.27537 12.9029 3.38898 12.8349L6.75005 10.8261L10.1099 12.8349C10.3557 12.9828 10.6657 12.9694 10.8986 12.8005C11.1321 12.6313 11.2411 12.3404 11.1776 12.0598L10.3091 8.23407L13.2544 5.65157C13.471 5.46205 13.5537 5.16273 13.4648 4.88886Z" fill="black" />
-																							</svg>
-																						</span>
-																					</span>
-																					<span class="screen-reader-text">
-																						Rated <strong class="rating">0.00</strong> out of 5 based on <span class="rating">0</span> ratings
-																					</span>
-																				</div>
-
-																				<div class="review-count">(0)</div>
-																			</div>
-																		</div>
-																	</div>
-																</div>
-															</div>
-														</div>
+															}
+														}
+														else
+														{
+															<p class="text-center">No bouquets found.</p>
+														}
+													
 													</div>
 													<div class="bwp-slider-arrow bwp-swiper-button-prev swiper-button-prev-557b022"
 														 data-widget-id="557b022"

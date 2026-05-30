@@ -6,58 +6,158 @@
     string PriceDisplay(decimal price) => price.ToString("C", CultureInfo.CurrentCulture);
 }
 
-<div class="container" style="padding: 40px 0;">
-    <div class="row">
-        <div class="col-md-6 col-12">
-            <div class="product-gallery">
+<div id="main-content" class="main-content">
+    <div id="primary" class="content-area container">
+        <div id="content" class="site-content" role="main">
+            <article id="post-56288" class="post-56288 page type-page status-publish hentry">
+                <div class="entry-content clearfix">
+                    <div data-elementor-type="wp-page" data-elementor-id="56288" class="elementor elementor-56288">
 
-                <div class="main-image-box" style="border: 1px solid #eee; text-align:center; padding:10px; margin-bottom: 15px;">
-                    <img id="zoom-image" src="@ViewBag.MainImage" alt="@Model.Name" class="img-fluid" style="max-height: 450px; object-fit: cover; width: 100%;" />
-                </div>
-
-                <div class="image-thumbs-list d-flex flex-wrap" style="gap: 10px;">
-                    @if (ViewBag.AllImages != null)
-                    {
-                        var isFirst = true;
-                        foreach (string imgPath in ViewBag.AllImages)
-                        {
-                            <div class="thumb-item" style="width: 80px; height: 80px; border: 1px solid @(isFirst ? "#fe4c50" : "#eee"); cursor: pointer; padding: 2px;">
-                                <img src="@imgPath" class="img-fluid h-100 w-100" style="object-fit: cover;" onclick="changeImage(this.src, this)" />
+                        <div class="account-banner" style="margin-bottom: 15px">
+                            <div class="container">
+                                <div class="content-title-heading">
+                                    <h1 class="text-title-heading">Shop Detail</h1>
+                                </div>
+                                <div id="breadcrumb" class="breadcrumb">
+                                    <div class="bwp-breadcrumb">
+                                        <a href="/">Home</a> <span class="delimiter">/</span> <span class="current">Detail</span>
+                                    </div>
+                                </div>
                             </div>
-                            isFirst = false;
-                        }
-                    }
+                        </div>
+
+                        <div class="container" style="padding: 40px 0;">
+                            <div class="row">
+                                <div class="col-md-6 col-12">
+                                    <div class="product-gallery">
+                                        <div class="main-image-box" style="border: 1px solid #eee; text-align:center; padding:10px; margin-bottom: 15px; border-radius: 4px; background: #fff;">
+                                            <img id="zoom-image" src="@ViewBag.MainImage" alt="@Model.Name" class="img-fluid" style="max-height: 450px; object-fit: cover; width: 100%;" />
+                                        </div>
+
+                                        <div class="image-thumbs-list d-flex flex-wrap" style="gap: 10px;">
+                                            @if (ViewBag.AllImages != null)
+                                            {
+                                                var isFirst = true;
+                                                foreach (string imgPath in ViewBag.AllImages)
+                                                {
+                                                    <div class="thumb-item" style="width: 80px; height: 80px; border: 1px solid @(isFirst ? "#111" : "#eee"); cursor: pointer; padding: 2px; border-radius: 4px; transition: border-color 0.2s;">
+                                                        <img src="@imgPath" class="img-fluid h-100 w-100" style="object-fit: cover; border-radius: 2px;" onclick="changeImage(this.src, this)" />
+                                                    </div>
+                                                    isFirst = false;
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-12">
+                                    <div class="product-summary" style="padding-left: 20px;">
+                                        <h1 style="font-size: 40px; font-weight: bold; margin-bottom: 10px; color: #222;">@Model.Name</h1>
+
+                                        <p style="font-size: 14px; color: #777; margin-bottom: 15px;">
+                                            <strong style="color: #333;">Category:</strong> @ViewBag.OccasionName
+                                        </p>
+
+                                        <p style="font-size: 28px; color: #b89e2e; font-weight: bold; margin-bottom: 25px;">@PriceDisplay(Model.Price)</p>
+
+                                        <hr />
+
+                                        <form id="add-to-cart-form" action="/cart/add" method="get" class="my-4">
+                                            <input type="hidden" name="id" value="@Model.Id" />
+
+                                            <div class="d-flex align-items-center flex-wrap" style="gap: 20px;">
+                                                <div class="quantity-input-group d-flex align-items-center" style="border: 1px solid #ddd; border-radius: 4px; overflow: hidden; height: 45px; background: #fff;">
+                                                    <button type="button" class="btn btn-light" onclick="decreaseQty()" style="border: none; border-right: 1px solid #ddd; width: 40px; font-weight: bold; height: 100%; background: #fbfbfb;">-</button>
+                                                    <input type="number" id="quantity" name="quantity" value="1" min="1" max="100" style="width: 60px; text-align: center; border: none; font-weight: bold; height: 100%; -moz-appearance: textfield;" />
+                                                    <button type="button" class="btn btn-light" onclick="increaseQty()" style="border: none; border-left: 1px solid #ddd; width: 40px; font-weight: bold; height: 100%; background: #fbfbfb;">+</button>
+                                                </div>
+
+                                                <button type="submit" class="btn btn-danger btn-add-to-cart d-flex align-items-center justify-content-center"
+                                                        style="background-color: #111; border-color: #111; padding: 0 35px; height: 45px; font-weight: bold; border-radius: 4px; transition: all 0.3s; letter-spacing: 1px;">
+                                                    <i class="icon-shopping-cart mr-2" style="font-size: 16px;"></i> ADD TO CART
+                                                </button>
+                                            </div>
+                                        </form>
+
+                                        <hr />
+
+                                        <div class="product-description-box" style="background-color: #f9f9f9; border-left: 3px solid #111; padding: 20px; border-radius: 0 8px 8px 0; margin: 25px 0;">
+                                            <h5 style="font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; color: #333;">
+                                                <i class="icon-file-text mr-2" style="color: #b89e2e;"></i> Description
+                                            </h5>
+                                            <p style="color: #555; line-height: 1.7; font-size: 14.5px; margin-bottom: 0; text-align: justify; white-space: pre-line;">
+                                                @Model.Description
+                                            </p>
+                                        </div>
+
+                                        <hr />
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-            </div>
-        </div>
-
-        <div class="col-md-6 col-12">
-            <div class="product-summary" style="padding-left: 20px;">
-                <h1 style="font-size: 30px; font-weight: bold; margin-bottom: 15px;">@Model.Name</h1>
-                <p><strong>Danh mục:</strong> @ViewBag.OccasionName</p>
-                <p style="font-size: 24px; color: #fe4c50; font-weight: bold;">@PriceDisplay(Model.Price)</p>
-                <hr />
-                <p style="color: #666; line-height: 1.6;">@Model.Description</p>
-                <hr />
-                <a asp-action="Index" class="btn btn-secondary">Quay lại cửa hàng</a>
-            </div>
+            </article>
         </div>
     </div>
 </div>
-
 <script>
     function changeImage(src, element) {
-        // Thay ảnh lớn bằng ảnh vừa click
         document.getElementById('zoom-image').src = src;
 
-        // Reset lại viền xám cho toàn bộ các ô ảnh nhỏ
         var thumbs = document.querySelectorAll('.thumb-item');
         thumbs.forEach(function(item) {
             item.style.borderColor = '#eee';
         });
 
-        // Tô viền đỏ cho ô ảnh nhỏ đang được chọn
-        element.parentElement.style.borderColor = '#fe4c50';
+        element.parentElement.style.borderColor = '#111';
+    }
+
+    function increaseQty() {
+        var qtyInput = document.getElementById('quantity');
+        var currentVal = parseInt(qtyInput.value);
+        if (!isNaN(currentVal)) {
+            qtyInput.value = currentVal + 1;
+        }
+    }
+
+    function decreaseQty() {
+        var qtyInput = document.getElementById('quantity');
+        var currentVal = parseInt(qtyInput.value);
+        if (!isNaN(currentVal) && currentVal > 1) {
+            qtyInput.value = currentVal - 1;
+        }
     }
 </script>
+
+<style>
+    /* Loại bỏ mũi tên tăng giảm mặc định của input number */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+
+    #add-to-cart-form button:hover {
+        opacity: 0.95;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(254, 76, 80, 0.2);
+    }
+
+    /* Hiệu ứng hover cho nút Add to Cart */
+    .btn-add-to-cart:hover {
+        background-color: #b89e2e !important;
+        border-color: #b89e2e !important;
+        color: #fff !important; /* Đảm bảo chữ và icon vẫn giữ màu trắng */
+        box-shadow: 0 4px 12px rgba(184, 158, 46, 0.3); /* Tạo hiệu ứng đổ bóng mờ màu vàng cho sang trọng */
+    }
+
+    .thumb-item:hover {
+        border-color: #111 !important;
+    }
+</style>
