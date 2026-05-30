@@ -62,8 +62,9 @@
 
                                         <hr />
 
-                                        <form id="add-to-cart-form" action="/cart/add" method="get" class="my-4">
-                                            <input type="hidden" name="id" value="@Model.Id" />
+                                        <form id="add-to-cart-form" asp-controller="Cart" asp-action="AddToCart"
+                                              method="post" class="my-4">
+                                            <input type="hidden" name="bouquetId" value="@Model.Id" />
 
                                             <div class="d-flex align-items-center flex-wrap" style="gap: 20px;">
                                                 <div class="quantity-input-group d-flex align-items-center" style="border: 1px solid #ddd; border-radius: 4px; overflow: hidden; height: 45px; background: #fff;">

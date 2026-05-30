@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Shopv2.Controllers
 {
-    [Route("bouquets")]
+    [Route("shop")]
     public class ShopController : Controller
     {
         private readonly ApplicationDbContext _context;
