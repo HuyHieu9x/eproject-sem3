@@ -152,7 +152,7 @@ namespace Shopv2.Controllers
 
             // Delete Cart after Order Success
             List<CartItem> cartItems = _context.CartItems.Where(cItm => cItm.CartId == cart.Id).ToList();
-            //_context.CartItems.RemoveRange(cartItems);
+            _context.CartItems.RemoveRange(cartItems);
             _context.SaveChanges();
 
             // Alert Success screen

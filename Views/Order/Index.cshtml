@@ -176,7 +176,7 @@
                                                             <td class="text-left">@statusNm</td>
                                                             <td class="text-left">@order.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")</td>
                                                             <td class="text-left">@order.DeliveryDate?.ToString("yyyy-MM-dd HH:mm")</td>
-                                                            <td class="text-right">@order.TotalAmount.ToString("N0")</td>
+                                                            <td class="text-right">$@order.TotalAmount.ToString("N0")</td>
 
                                                             <td>
                                                                 <a asp-action="Detail" asp-route-id="@order.Id" class="btn btn-warning btn-sm"> Detail</a>

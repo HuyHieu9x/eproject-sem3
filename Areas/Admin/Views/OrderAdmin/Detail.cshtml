@@ -74,7 +74,7 @@
                             }
                             <td>@statusNm</td>
                             <td><strong>Payment: </strong></td>
-                            <td>@Model.Order.TotalAmount</td>
+                            <td>$@Model.Order.TotalAmount</td>
                                                 
                                                 
                         </tr>
@@ -158,7 +158,7 @@
 
                                     <td>@item.Description</td>
 
-                                    <td> @item.Price.ToString("N0") </td>
+                                    <td> $@item.Price.ToString("N0") </td>
 
                                     <td>
                                         <div class="cart-quantity">
@@ -171,7 +171,7 @@
                                     </td>
 
                                     <td>
-                                        @item.TotalPrice.ToString("N0")
+                                        $@item.TotalPrice.ToString("N0")
                                     </td>
                                 </tr>
                                 no++;

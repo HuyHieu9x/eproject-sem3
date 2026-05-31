@@ -1876,9 +1876,15 @@
 
 																			<div class="btn-atc hidden-md hidden-sm hidden-xs">
 																				<div class="type_simple" data-title="Add to cart">
-																					<a rel="nofollow" href="/cart/add?id=@bouquet.Id" data-quantity="1" data-product_id="@bouquet.Id" class="button product_type_simple add_to_cart_button ajax_add_to_cart"><span>Add to cart</span></a>
+																					<a rel="nofollow" href="#" onclick="document.getElementById('cart-form-@bouquet.Id').submit(); return false;" data-product_id="@bouquet.Id" class="button product_type_simple add_to_cart_button ajax_add_to_cart"><span>Add to cart</span></a>
 																				</div>
 																			</div>
+																			<form id="cart-form-@bouquet.Id" asp-controller="Cart" asp-action="AddToCart" method="post" style="display:none">
+
+																				<input type="hidden" name="bouquetId" value="@bouquet.Id" />
+																				<input type="hidden" name="quantity" value="1" />
+
+																			</form>
 																		</div>
 
 																		<div class="products-content">

@@ -164,6 +164,7 @@
 
                                                     @{
                                                         int stt = 1;
+                                                        decimal totalPrice = 0;
                                                     }
 
                                                     @foreach (var item in Model.cartItemsView)
@@ -237,7 +238,7 @@
                                                             </td>
 
                                                             <td>
-                                                                @item.TotalPrice.ToString("N0")
+                                                                $@item.TotalPrice.ToString("N0")
                                                             </td>
 
                                                             <td>
@@ -263,11 +264,17 @@
                                                         </tr>
 
                                                         stt++;
+                                                        totalPrice += item.TotalPrice;
                                                     }
-
+                                                    <tr
+                                                        ><td colspan="7" class="text-right"><strong>Total Price:    </strong>$@totalPrice</td>
+                                                        <td></td>
+                                                    </tr>
+                                                    
                                                 </tbody>
 
                                             </table>
+
                                             <div class="container" style="text-align:center">
                                                 @using (Html.BeginForm("create", "order", FormMethod.Post))
                                                 {
